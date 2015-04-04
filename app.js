@@ -8,9 +8,12 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var PORT = process.env.PORT || 3000;
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
+
 mongoose.connect(mongoURI);
 
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.engine("handlebars", exphbs({defaultLayout: "main"}));
 app.set("view engine", "handlebars");
@@ -29,3 +32,12 @@ app.get("/", gameRoom.getHome);
 app.get("/:namespace", gameRoom.getLobby);
 app.get("/:namespace/game", gameRoom.getGame);
 
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
+http.listen(PORT);
+>>>>>>> cdc0827528128efb1ae1ff1ba5e329b2723743d0
