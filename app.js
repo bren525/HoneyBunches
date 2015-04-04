@@ -24,3 +24,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+app.get("/", gameRoom.getHome);
+app.get("/:namespace", gameRoom.getLobby);
+app.get("/:namespace/game", gameRoom.getGame);
+
