@@ -8,9 +8,12 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var PORT = process.env.PORT || 3000;
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
+
 mongoose.connect(mongoURI);
 
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.engine("handlebars", exphbs({defaultLayout: "main"}));
 app.set("view engine", "handlebars");
@@ -24,3 +27,16 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+app.get('/', function(req, res){
+  res.render("home");
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
+http.listen(PORT);
