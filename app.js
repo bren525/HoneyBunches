@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var PORT = process.env.PORT || 3000;
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
+var gameRoom = require('./routes/gameRoom');
 
 mongoose.connect(mongoURI);
 
@@ -29,15 +30,18 @@ app.use(session({
 }));
 
 app.get("/", gameRoom.getHome);
+/*
 app.get("/:namespace", gameRoom.getLobby);
-app.get("/:namespace/game", gameRoom.getGame);
+app.get("/:namespace/game", gameRoom.getGame); */
 
 io.on('connection', function(socket){
   console.log('a user connected');
+  socket.on('chat message', function(msg) {
+  	console.log('message: ' + msg);
+  });
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
 });
 
 http.listen(PORT);
->>>>>>> cdc0827528128efb1ae1ff1ba5e329b2723743d0
