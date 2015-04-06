@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var PORT = process.env.PORT || 3000;
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
+var gameRoom = require('./routes/gameRoom');
 
 mongoose.connect(mongoURI);
 
@@ -37,6 +38,9 @@ app.get("/of/:namespace/game", gameRoom.getGame);
 
 io.on('connection', function(socket){
   console.log('a user connected');
+  socket.on('chat message', function(msg) {
+  	console.log('message: ' + msg);
+  });
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
