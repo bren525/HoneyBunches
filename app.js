@@ -15,6 +15,8 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+var gameRoom = require("./routes/gameRoom");
+
 app.engine("handlebars", exphbs({defaultLayout: "main"}));
 app.set("view engine", "handlebars");
 app.use(logger("dev"));
@@ -29,8 +31,9 @@ app.use(session({
 }));
 
 app.get("/", gameRoom.getHome);
-app.get("/:namespace", gameRoom.getLobby);
-app.get("/:namespace/game", gameRoom.getGame);
+app.get("/namespace", gameRoom.getNamespace);
+app.get("/of/:namespace", gameRoom.getLobby);
+app.get("/of/:namespace/game", gameRoom.getGame);
 
 io.on('connection', function(socket){
   console.log('a user connected');
@@ -40,4 +43,5 @@ io.on('connection', function(socket){
 });
 
 http.listen(PORT);
->>>>>>> cdc0827528128efb1ae1ff1ba5e329b2723743d0
+
+console.log("Running on", PORT);

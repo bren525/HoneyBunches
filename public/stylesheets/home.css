@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center; /* !!! */
+}
+
+.title{
+    width: 95%;
+    font-size: 300%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+}
+
+.flipping-name{
+    text-decoration: underline;
+    font-size: 110%;
+    cursor: pointer;
+}
+
+.flipping-name:hover{
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
