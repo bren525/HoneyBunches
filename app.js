@@ -4,19 +4,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
-var mongoose = require('mongoose');
 var session = require('express-session');
 var PORT = process.env.PORT || 3000;
-var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
 var gameRoom = require('./routes/gameRoom');
-
-mongoose.connect(mongoURI);
 
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-var gameRoom = require("./routes/gameRoom");
+var gameRoom = require("./routes/gameRoom")(io);
 
 app.engine("handlebars", exphbs({defaultLayout: "main"}));
 app.set("view engine", "handlebars");
@@ -35,6 +31,8 @@ app.get("/", gameRoom.getHome);
 app.get("/namespace", gameRoom.getNamespace);
 app.get("/of/:namespace", gameRoom.getLobby);
 app.get("/of/:namespace/game", gameRoom.getGame);
+
+app.post("/of/:namespace", gameRoom.postGameRoom);
 
 io.on('connection', function(socket){
   console.log('a user connected');

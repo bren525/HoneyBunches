@@ -14,5 +14,7 @@ setInterval(changeName, 5000);
 
 $flippingName.click(function () {
 	console.log(curentName);
-	window.location.href = window.location.href+'of/'+curentName;
+	$.post("/of/"+curentName, function () {
+		window.location.href = window.location.href+'of/'+curentName;
+	})
 });
