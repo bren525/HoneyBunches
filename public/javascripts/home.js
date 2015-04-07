@@ -10,7 +10,7 @@ function changeName () {
 	});
 };
 
-setInterval(changeName, 5000);
+setInterval(changeName, 2500);
 
 $flippingName.click(function () {
 	console.log(curentName);

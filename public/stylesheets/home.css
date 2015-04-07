@@ -4,23 +4,28 @@ body {
     text-align: center; /* !!! */
 }
 
-.title{
+.title {
     width: 95%;
-    font-size: 300%;
+    font-size: 350%;
     position: fixed;
-    top: 50%;
+    top: 46.5%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
 }
 
 .flipping-name{
-    text-decoration: underline;
+    width: 95%;
+    font-size: 350%;
+    position: fixed;
+    top: 53.5%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
     cursor: pointer;
-    display: inline-block; 
+    display: inline-block;
 }
 
 .flipping-name:hover{
-    -webkit-transform: scale(1.05);
-    transform: scale(1.05);
+    text-decoration: underline;
 }
