@@ -1,5 +1,6 @@
 var $flippingName = $(".flipping-name");
 var curentName = $flippingName.text();
+
 function changeName () {
 	$.get("/namespace", function (name){
 		curentName = name;

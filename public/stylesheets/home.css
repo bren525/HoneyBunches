@@ -15,7 +15,7 @@ body {
 }
 
 .flipping-name{
-    width: 95%;
+    overflow: auto;
     font-size: 350%;
     position: fixed;
     top: 53.5%;
