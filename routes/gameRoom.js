@@ -31,7 +31,14 @@ module.exports = function(io){
 
     getLobby: function(req, res){
       req.session.namespace = req.params.namespace;
-      res.render('lobby', {"namespace": req.params.namespace});
+      console.log(req.params.namespace);
+      var clients = io.of(req.params.namespace).connected;
+      var users = []
+      Object.keys(clients).forEach(function (key) {
+        users.push({"id": key, "nickname": clients[key].nickname})
+      });
+      console.log(users);
+      res.render('lobby', {"namespace": req.params.namespace, "users": users});
     },
 
     getGame: function(req, res){

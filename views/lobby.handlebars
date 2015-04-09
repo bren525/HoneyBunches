@@ -1,4 +1,11 @@
-<h1 id="title" namespace={{namespace}}> Lobby for: {{namespace}}<h1>
-
+<h1 id="title" namespace={{namespace}}> Lobby for: {{namespace}}</h1>
+<h2>Connected Players</h2>
+<ul id='users'>
+{{#each users}}
+	<div class='container'>
+		<li>{{this.nickname}}</li>
+	</div>
+{{/each}}
+</ul>
 <script type="text/javascript" src="../javascripts/lobby.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="stylesheets/home.css">-->
