@@ -4,7 +4,6 @@ module.exports = {
     nsp.on('connection', function(socket){
       console.log('a user connected to', nsp.name);
       socket.on('game message', function(msg) {
-        console.log('message recieved');
         nsp.emit('game message',msg);
       });
       socket.on('disconnect', function(){

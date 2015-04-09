@@ -1,8 +1,6 @@
-function init() {
-    console.log('running init')
+function init(socket) {
     var stage = new createjs.Stage("demoCanvas");
     var drawing = false;
-    console.log(socket);
 	createjs.Ticker.addEventListener("tick", stage);
     createjs.Ticker.setFPS(60);
 
@@ -69,8 +67,6 @@ function init() {
 	}
 
 }
-
-init();
 
 //ED2D39
 //12E491scheme
