@@ -1,4 +1,5 @@
 function init(socket) {
+    console.log(socket);
     var stage = new createjs.Stage("demoCanvas");
     var drawing = false;
 	createjs.Ticker.addEventListener("tick", stage);
