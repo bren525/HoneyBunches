@@ -42,7 +42,7 @@ module.exports = function(io){
     },
 
     getGame: function(req, res){
-
+      res.render('gameroom', {"namespace": req.params.namespace});
     },
   }
 };
