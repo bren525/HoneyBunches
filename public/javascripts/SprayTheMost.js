@@ -2,8 +2,42 @@ function init(socket) {
     console.log(socket);
     var stage = new createjs.Stage("demoCanvas");
     var drawing = false;
-	createjs.Ticker.addEventListener("tick", stage);
+
+    createjs.Ticker.addEventListener("tick", onTick);
+	
     createjs.Ticker.setFPS(60);
+
+    var txt = new createjs.Text();
+    txt.text = "10";
+    txt.font = "50px Arial";
+    txt.color = "#000000";
+    txt.outline = 5;
+    txt.x = 15;
+
+    var txt2 = new createjs.Text();
+    txt2.text = "10";
+    txt2.font = "50px Arial";
+    txt2.color = "#ffffff";
+    txt2.outline = false;
+    txt2.x = 15;
+
+    stage.addChild(txt);
+    stage.addChild(txt2);
+
+    function onTick(event){
+        if(!event.paused){
+            time = 10 - Math.floor(createjs.Ticker.getTime()/1000);
+            txt.text = time;
+            txt2.text = time;
+            stage.update();
+            if (time <= 0){
+                createjs.Ticker.setPaused(true);
+                getScore();   
+            }
+        }
+    }
+
+
 
     stage.on('stagemousemove', function(event){
     	//console.log(event.stageX, event.stageY,socket.id);
@@ -39,12 +73,13 @@ function init(socket) {
 		circle.x = msg.position.x;
 		circle.y = msg.position.y;
     	stage.addChild(circle);
-
+        //stage.addChildAt(circle,stage.getNumChildren()-2);
+        stage.setChildIndex(circle,stage.getNumChildren()-3);
     	
     });
-    $("#score").click(function(){
-    	getScore();
-    });
+
+    	
+
 
     function getScore(){
     	var canvas = document.getElementById('demoCanvas');
