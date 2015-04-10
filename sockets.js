@@ -6,11 +6,16 @@ module.exports = {
     nsp.on('connection', function(socket){
       getNickname(function(animal) { 
         socket.nickname = animal;
-        socket.emit('new_user', {nickname: socket.nickname});
+        nsp.emit('new_user', {id: socket.id, nickname: socket.nickname});
         console.log('a user connected to', nsp.name);
         socket.on('game message', function(msg) {
           nsp.emit('game message',msg);
         });
+        socket.on('edit_user', function(msg) {
+          console.log(msg);
+          nsp.connected[msg.id].nickname = msg.nickname;
+          nsp.emit('change_user', msg);
+        })
         socket.on('disconnect', function(){
           console.log('user disconnected from', nsp.name);
         });

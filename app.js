@@ -33,6 +33,7 @@ app.get("/of/:namespace", gameRoom.getLobby);
 app.get("/of/:namespace/game", gameRoom.getGame);
 
 app.post("/of/:namespace", gameRoom.postGameRoom);
+app.post("/editUser", gameRoom.editUser);
 
 http.listen(PORT);
 
