@@ -1,4 +1,4 @@
-function init(socket,host, callback) {
+function init(users, socket, callback) {
     console.log("SprayTheMost init");
     var stage = new createjs.Stage("demoCanvas");
     var drawing = false;

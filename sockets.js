@@ -1,5 +1,5 @@
 var request = require('request');
-
+var users = {};
 module.exports = {
   bindNamespace : function (nsp){
     nsp.on('connection', function(socket){
@@ -9,6 +9,7 @@ module.exports = {
       }
       getNickname(function(animal) {
         socket.nickname = animal;
+        users[socket.id] = {nickname: socket.nickname};
         nsp.emit('new_user', {id: socket.id, nickname: socket.nickname});
         console.log('a user connected to', nsp.name);
         socket.on('game message', function(msg) {
@@ -18,7 +19,7 @@ module.exports = {
           nsp.emit('game state',msg);
         });
         socket.on('start_game', function(msg) {
-          nsp.emit('start_game',msg);
+          nsp.emit('start_game',users);
         });
         socket.on('edit_user', function(msg) {
           console.log(msg);

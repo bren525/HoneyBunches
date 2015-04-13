@@ -1,9 +1,8 @@
 var $title = $('#title');
 var $startButton = $('#start-button');
-var host = false;
 
 var socket = io(window.location.origin+'/'+$title.attr('namespace'));
-
+socket.host = false;
 var namespace = $title.attr('namespace');
 
 socket.on('new_user', function(data) {
@@ -50,11 +49,13 @@ function makehost(hostID) {
 	$startButton.click(function (e) {
 		socket.emit('start_game');
 	});
-	host = true
+	socket.host = true
 }
 
 socket.on('start_game', function(msg){
+	var users = msg;
+	console.log(users);
 	$('body').load('/game', 'namespace='+namespace , function(){
-		gametime(socket,host);
+		gametime(users, socket,host);
 	});
 });
