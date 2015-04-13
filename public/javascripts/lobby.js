@@ -51,11 +51,7 @@ function makehost(hostID) {
 }
 
 socket.on('start_game', function(msg){
-	$('body').load('/game', function(){
+	$('body').load('/game', 'namespace='+namespace, function(){
 		gametime(socket);
 	});
 });
-
-
-
-
