@@ -2,9 +2,12 @@ var request = require('request');
 
 module.exports = {
   bindNamespace : function (nsp){
-    console.log("binding functions to", nsp.name);
     nsp.on('connection', function(socket){
-      getNickname(function(animal) { 
+      if(Object.keys(nsp.connected).length === 1){
+        nsp.host = socket.id;
+        socket.emit('host', {host: socket.id});
+      }
+      getNickname(function(animal) {
         socket.nickname = animal;
         socket.emit('new_user', {nickname: socket.nickname});
         console.log('a user connected to', nsp.name);

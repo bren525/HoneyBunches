@@ -30,7 +30,7 @@ app.use(session({
 app.get("/", gameRoom.getHome);
 app.get("/namespace", gameRoom.getNamespace);
 app.get("/of/:namespace", gameRoom.getLobby);
-app.get("/of/:namespace/game", gameRoom.getGame);
+app.get("/game", gameRoom.getGame);
 
 app.post("/of/:namespace", gameRoom.postGameRoom);
 

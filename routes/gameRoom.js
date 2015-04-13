@@ -26,12 +26,11 @@ module.exports = function(io){
         res.json("Error")
         console.log("That Game Room already exists :/");
       }
-
     },
 
     getLobby: function(req, res){
       req.session.namespace = req.params.namespace;
-      console.log(req.params.namespace);
+      req.session.save();
       var clients = io.of(req.params.namespace).connected;
       var users = []
       Object.keys(clients).forEach(function (key) {
