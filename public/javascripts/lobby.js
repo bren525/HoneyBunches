@@ -1,5 +1,5 @@
 var $title = $('#title');
-var $start-button = $('#start-button');
+var $startButton = $('#start-button');
 var host = false;
 
 var socket = io(window.location.origin+'/'+$title.attr('namespace'));
@@ -34,8 +34,8 @@ $(document).on('click', '#newName', function (e) {
 });
 
 function makehost(hostID) {
-	$start-button.text('Start the Game');
-	$start-button.click(function (e) {
+	$startButton.text('Start the Game');
+	$startButton.click(function (e) {
 		socket.emit('start_game');
 	});
 }
