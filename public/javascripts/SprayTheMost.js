@@ -1,10 +1,14 @@
 function init(socket) {
-    console.log(socket);
+    console.log("running...");
     var stage = new createjs.Stage("demoCanvas");
     var drawing = false;
 
+    // createjs.Ticker.removeAllEventListeners();
+    // createjs.Ticker.reset();
+    // createjs.Ticker._inited = false;
+    // createjs.Ticker.init();
+    
     createjs.Ticker.addEventListener("tick", onTick);
-	
     createjs.Ticker.setFPS(60);
 
     var txt = new createjs.Text();
@@ -21,22 +25,29 @@ function init(socket) {
     txt2.outline = false;
     txt2.x = 15;
 
+    timerTicks = 0;
+    time = 10;
+    state ="running"
+
     stage.addChild(txt);
     stage.addChild(txt2);
 
     function onTick(event){
-        if(!event.paused){
-            time = 10 - Math.floor(createjs.Ticker.getTime()/1000);
+        console.log(createjs.Ticker.getTime())
+        if(time > 0){
+            timerTicks += 1;
+            time = 10 - Math.floor(timerTicks/60);
             txt.text = time;
             txt2.text = time;
             stage.update();
-            if (time <= 0){
-                createjs.Ticker.setPaused(true);
-                getScore();   
-            }
         }
-    }
+        if (time == 0 && state == "running"){
+                //createjs.Ticker.off("tick",listener)
+                state = "game over";
+                getScore();   
+        }
 
+    }
 
 
     stage.on('stagemousemove', function(event){
