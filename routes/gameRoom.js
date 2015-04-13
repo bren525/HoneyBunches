@@ -51,7 +51,7 @@ module.exports = function(io){
       var clients = io.of(req.query.namespace).connected;
       var users = []
       Object.keys(clients).forEach(function (key) {
-        users.push({"id": key, "nickname": clients[key].nickname, "score":'0'})
+        users.push({"id": key, "nickname": clients[key].nickname, "colour": clients[key].colour, "score":'0'})
       });
       res.render('gameroom', {"namespace": req.query.namespace, "users":users, "mainuser":'None', "game":'Waiting'});
     },
