@@ -1,7 +1,8 @@
-function init(socket) {
-    console.log("running...");
+function init(socket,host) {
+    console.log("SprayTheMost init");
     var stage = new createjs.Stage("demoCanvas");
     var drawing = false;
+    var state = "loading";
 
     // createjs.Ticker.removeAllEventListeners();
     // createjs.Ticker.reset();
@@ -25,35 +26,40 @@ function init(socket) {
     txt2.outline = false;
     txt2.x = 15;
 
-    timerTicks = 0;
-    time = 10;
-    state ="running"
-
     stage.addChild(txt);
     stage.addChild(txt2);
 
+
+    var timerTicks = 600;
+
+    if (host == true) {
+        socket.emit("game state",{title:'spraythemost',state:'running'});
+    }
+
     function onTick(event){
-        console.log(createjs.Ticker.getTime())
-        if(time > 0){
-            timerTicks += 1;
-            time = 10 - Math.floor(timerTicks/60);
-            txt.text = time;
-            txt2.text = time;
+        if(state == "running"){
             stage.update();
         }
-        if (time == 0 && state == "running"){
-                //createjs.Ticker.off("tick",listener)
+        if (host == true) {
+            timerTicks -= 1;
+            if(timerTicks%60 == 0 && state == "running"){
+                console.log((timerTicks/60));
+                socket.emit("game message",{title:'spraythemost',type:'time',val:(timerTicks/60)});
+            }
+            if(timerTicks == 0){
+                socket.emit("game state", {title:'spraythemost',state:"scoring"});
                 state = "game over";
-                getScore();   
+                getScore();
+            }
         }
-
     }
+    
 
 
     stage.on('stagemousemove', function(event){
     	//console.log(event.stageX, event.stageY,socket.id);
     	if(drawing){
-	    	socket.emit('game message',{title:'spraythemost',id:socket.id,position:{x:event.stageX,y:event.stageY}});
+	    	socket.emit('game message',{title:'spraythemost',type:'paint',id:socket.id,position:{x:event.stageX,y:event.stageY}});
 	    }
     });
 
@@ -79,18 +85,31 @@ function init(socket) {
 	} 
 
     socket.on('game message', function(msg){
-    	var circle = new createjs.Shape();
-		circle.graphics.beginFill('#'+intToARGB(hashCode(msg.id).toString())).drawCircle(0, 0, 20);
-		circle.x = msg.position.x;
-		circle.y = msg.position.y;
-    	stage.addChild(circle);
-        //stage.addChildAt(circle,stage.getNumChildren()-2);
-        stage.setChildIndex(circle,stage.getNumChildren()-3);
+        if(msg.title == "spraythemost" && msg.type == "paint"){
+        	var circle = new createjs.Shape();
+    		circle.graphics.beginFill('#'+intToARGB(hashCode(msg.id).toString())).drawCircle(0, 0, 20);
+    		circle.x = msg.position.x;
+    		circle.y = msg.position.y;
+        	stage.addChild(circle);
+            stage.setChildIndex(circle,stage.getNumChildren()-3);
+        }
+
+        if(msg.title == "spraythemost" && msg.type == "time"){
+            txt.text = msg.val.toString();
+            txt2.text = msg.val.toString();
+        }
     	
     });
 
-    	
+    socket.on('game state', function(msg){
+        state = msg.state;
+        console.log(state);
+    });
 
+    socket.on('time tracker', function(msg){
+       console.log('tracking time'); 
+    });
+        
 
     function getScore(){
     	var canvas = document.getElementById('demoCanvas');
@@ -108,7 +127,6 @@ function init(socket) {
     		}else{
     			totals[rgb] = 1;
     		}
-    		
     	}
     	console.log(totals)
 	}

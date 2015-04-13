@@ -1,7 +1,8 @@
-gametime = function(socket){
-	console.log(socket);
+gametime = function(socket,host){
+	console.log('its game time!');
 	$.getScript('/javascripts/SprayTheMost.js', function(){
-		init(socket);
+		console.log('spray script loaded');
+		init(socket,host);
 	});
 }
 

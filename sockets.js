@@ -14,6 +14,9 @@ module.exports = {
         socket.on('game message', function(msg) {
           nsp.emit('game message',msg);
         });
+        socket.on('game state', function(msg) {
+          nsp.emit('game state',msg);
+        });
         socket.on('start_game', function(msg) {
           nsp.emit('start_game',msg);
         });

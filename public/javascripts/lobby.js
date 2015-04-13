@@ -48,10 +48,11 @@ function makehost(hostID) {
 	$startButton.click(function (e) {
 		socket.emit('start_game');
 	});
+	host = true
 }
 
 socket.on('start_game', function(msg){
 	$('body').load('/game', 'namespace='+namespace, function(){
-		gametime(socket);
+		gametime(socket,host);
 	});
 });
