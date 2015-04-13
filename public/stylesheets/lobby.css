@@ -78,3 +78,7 @@ table {
 	margin: 0 auto;
 	width: 25%;
 }
+
+#editName, #name {
+	display: inline-block;
+}
