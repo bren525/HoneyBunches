@@ -1,14 +1,14 @@
-<ul id="top-bar">
+<ul id="topBar">
 	<li>{{mainuser}}</li>
 	<li>{{namespace}}</li>
 	<li>{{game}}</li>
 </ul>
 
 
-<ul id='sidebar'>
+<ul id='sideBar'>
 {{#each users}}
 	<div class='container'>
-		<li id={{this.id}}>{{this.nickname}}</li>
+		<li id={{this.id}}>{{this.nickname}} {{this.score}}</li>
 	</div>
 {{/each}}
 </ul>
@@ -17,4 +17,4 @@
 <canvas id="demoCanvas" width="500" height="300"></canvas>
 
 <script type="text/javascript" src="../../javascripts/game.js"></script>
-<!--<link rel="stylesheet" type="text/css" href="stylesheets/game.css">-->
+<link rel="stylesheet" type="text/css" href="../stylesheets/game.css">

@@ -45,7 +45,14 @@ module.exports = function(io){
     },
 
     getGame: function(req, res){
-      res.render('gameroom', {"namespace": req.params.namespace});
+      req.session.namespace = req.query.namespace;
+      req.session.save();
+      var clients = io.of(req.query.namespace).connected;
+      var users = []
+      Object.keys(clients).forEach(function (key) {
+        users.push({"id": key, "nickname": clients[key].nickname, "score":'0'})
+      });
+      res.render('gameroom', {"namespace": req.query.namespace, "users":users, "mainuser":'None', "game":'Waiting'});
     },
   }
 };
