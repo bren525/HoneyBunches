@@ -67,6 +67,6 @@ socket.on('start_game', function(msg){
 	var users = msg;
 	console.log(users);
 	$('body').load('/game', 'namespace='+namespace , function(){
-		gametime(users, socket,host);
+		gametime(users, socket);
 	});
 });
