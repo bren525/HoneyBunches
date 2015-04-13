@@ -1,5 +1,5 @@
 var games = ['SprayTheMost'];
-gametime = function(users, socket,host){
+gametime = function(users,socket){
 	console.log('its game time!');
 	var game = games[Math.floor(Math.random() * games.length)];
 	console.log(game);
