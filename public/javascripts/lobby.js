@@ -10,6 +10,7 @@ socket.on('new_user', function(data) {
 	console.log('new');
 	if (data.id === socket.id) {
 		$("#users").prepend("<li id='name' type='text'>"+data.nickname+"</li><input id='editName' type='submit' value='Edit'>");
+		socket.name = data.nickname;
 	} else {
 		$("#users").append("<li id=" + data.id + ">" + data.nickname + "</li>");
 	}
@@ -37,6 +38,7 @@ $(document).on('click', '#editName', function (){
 $(document).on('click', '#newName', function (e) {
 	var name = $('#name').val();
 	console.log(name);
+	socket.name = name;
 	$('#name').replaceWith("<li id='name'>"+name+"</li>");
 	$('#newName').attr('id', 'editName');
 	$('#editName').attr('value', 'Edit');
@@ -52,7 +54,7 @@ function makehost(hostID) {
 }
 
 socket.on('start_game', function(msg){
-	$('body').load('/game', 'namespace='+namespace, function(){
+	$('body').load('/game', 'namespace='+namespace , function(){
 		gametime(socket,host);
 	});
 });
