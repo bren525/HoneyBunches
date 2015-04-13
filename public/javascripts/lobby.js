@@ -1,5 +1,6 @@
 var $title = $('#title');
 var $boop = $('#boop');
+var host = false;
 
 var socket = io(window.location.origin+'/'+$title.attr('namespace'));
 
@@ -13,28 +14,38 @@ socket.on('new_user', function(data) {
 		$("#users").append("<li id=" + data.id + ">" + data.nickname + "</li>");
 	}
 });
+
 socket.on('host', function(data){
 	if (data.host === socket.id){
-		console.log("I'm the host bitch");
+		console.log('I am the host bitch')
+		makehost(socket.id);
 	}
-})
+});
 
 socket.on('change_user', function(data) {
 	console.log(data.id, data.nickname);
 	$("#" + data.id).text(data.nickname);
-})
+});
 
 $(document).on('click', '#newName', function (e) {
 	var name = $('#name').val();
 	console.log(name);
 	socket.emit('edit_user', {id: socket.id, nickname: name});
-})
+});
 
-console.log(window.location.origin+'/'+$title.attr('namespace'));
-$boop.click(function (e) {
+function makehost(hostID) {
+	$boop.text('Start the Game');
+	$boop.click(function (e) {
+		socket.emit('start_game');
+	});
+}
+
+socket.on('start_game', function(msg){
 	$('body').load('/game', function(){
 		gametime(socket);
-	});
+	});	
 });
+
+
 
 

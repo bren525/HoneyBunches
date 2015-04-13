@@ -14,6 +14,9 @@ module.exports = {
         socket.on('game message', function(msg) {
           nsp.emit('game message',msg);
         });
+        socket.on('start_game', function(msg) {
+          nsp.emit('start_game',msg);
+        });
         socket.on('edit_user', function(msg) {
           console.log(msg);
           nsp.connected[msg.id].nickname = msg.nickname;
