@@ -40,6 +40,10 @@ module.exports = function(io){
       res.render('lobby', {"namespace": req.params.namespace, "users": users});
     },
 
+    editUser: function(req, res){
+      console.log(req.body);
+    },
+
     getGame: function(req, res){
       res.render('gameroom', {"namespace": req.params.namespace});
     },
