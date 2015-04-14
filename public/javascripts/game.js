@@ -1,9 +1,15 @@
+//List of all possible games
 var games = ['SprayTheMost'];
-gametime = function(users, socket,host){
+
+//Run game code
+gametime = function(users,socket){
 	console.log('its game time!');
+	//Choose random game
 	var game = games[Math.floor(Math.random() * games.length)];
-	console.log(game);
+	//Set display variables
+	$('#game-name').text(game);
 	$('#user').text($('#'+ socket.id).text());
+	//Loads and starts game logic
 	$.getScript('../javascripts/'+game+'.js', function(){
 		console.log('spray script loaded');
 		init(users, socket, function (scores){
