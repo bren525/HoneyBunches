@@ -37,9 +37,7 @@ function init(socket,host) {
     }
 
     function onTick(event){
-        if(state == "running"){
-            stage.update();
-        }
+        stage.update();
         if (host == true) {
             timerTicks -= 1;
             if(timerTicks%60 == 0 && state == "running"){
@@ -64,7 +62,9 @@ function init(socket,host) {
     });
 
     stage.on('stagemousedown',function(event){
-    	drawing = true;
+    	if(state == "running"){
+            drawing = true;
+        }
     });
     stage.on('stagemouseup',function(event){
     	drawing = false;
@@ -104,6 +104,9 @@ function init(socket,host) {
     socket.on('game state', function(msg){
         state = msg.state;
         console.log(state);
+        if(state == 'scoring'){
+            drawing = false;
+        }
     });
 
     socket.on('time tracker', function(msg){
