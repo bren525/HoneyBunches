@@ -11,7 +11,9 @@ gametime = function(users,socket,game){
 	$.getScript('../javascripts/'+game+'.js', function(){
 		console.log('spray script loaded');
 		init(users, socket, function (scores){
+
 			console.log('scores', scores);
+			gametime(users,socket,game);
 		});
 	});
 }

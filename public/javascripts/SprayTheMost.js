@@ -120,9 +120,16 @@ function init(users,socket,callback) {
                 }
             });
     	}
-        console.log(users);
-    	// console.log(totals)
-        // callback(totals);
+        var scores = {}
+        var max = {id="",score=0};
+        $.each(users,function(k,v){
+            if(v.score>max.score){
+                max.score = v.score;
+                max.id = k;
+            }
+        });
+    	
+        callback({max.id:max.score});
 	}
 }
 
