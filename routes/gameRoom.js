@@ -1,6 +1,7 @@
 var namespaces = require("../public/namespaces");
 var names = namespaces.names;
 var sockets = require("../sockets");
+var colors = ['#f76d3c','#f7d842','#f15f74', '#5481e6','#913ccd','#839098','#98cb4a','#2ca8c2'];
 
 var gameRooms = {};
 module.exports = function(io){
@@ -34,10 +35,10 @@ module.exports = function(io){
       var clients = io.of(req.params.namespace).connected;
       var users = []
       Object.keys(clients).forEach(function (key) {
-        users.push({"id": key, "nickname": clients[key].nickname})
+        users.push({"id": key, "nickname": clients[key].nickname, "colour": clients[key].colour});
       });
       console.log(users);
-      res.render('lobby', {"namespace": req.params.namespace, "users": users});
+      res.render('lobby', {"namespace": req.params.namespace, "users": users, "colors": colors});
     },
 
     editUser: function(req, res){

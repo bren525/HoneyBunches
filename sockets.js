@@ -1,5 +1,5 @@
 var request = require('request');
-
+var users = {};
 module.exports = {
   bindNamespace : function (nsp){
     nsp.on('connection', function(socket){
@@ -9,7 +9,9 @@ module.exports = {
       }
       getNickname(function(animal) {
         socket.nickname = animal;
-        nsp.emit('new_user', {id: socket.id, nickname: socket.nickname});
+        socket.colour = '#000';
+        users[socket.id] = {nickname: socket.nickname, colour:socket.colour};
+        nsp.emit('new_user', {id: socket.id, nickname: socket.nickname, colour: socket.colour});
         console.log('a user connected to', nsp.name);
         socket.on('game message', function(msg) {
           nsp.emit('game message',msg);
@@ -18,13 +20,17 @@ module.exports = {
           nsp.emit('game state',msg);
         });
         socket.on('start_game', function(msg) {
-          nsp.emit('start_game',msg);
+          nsp.emit('start_game',users);
         });
         socket.on('edit_user', function(msg) {
           console.log(msg);
           nsp.connected[msg.id].nickname = msg.nickname;
           nsp.emit('change_user', msg);
-        })
+        });
+        socket.on('color', function(msg) {
+          nsp.connected[msg.id].colour = msg.colour;
+          nsp.emit('color', msg);
+        });
         socket.on('disconnect', function(){
           console.log('user disconnected from', nsp.name);
         });
