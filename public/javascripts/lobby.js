@@ -8,7 +8,7 @@ var namespace = $title.attr('namespace');
 socket.on('new_user', function(data) {
 	console.log('new', data.colour);
 	if (data.id === socket.id) {
-		$("#users").prepend("<li class='name' id="+ data.id +" type='text'><div class='colorChoice' style='background-color: "+ data.colour +"'></div>"+data.nickname+"</li><input id='editName' type='submit' value='Edit'>");
+		$("#users").prepend("<li class='name' id="+ data.id +" type='text'><div class='colorChoice' style='margin-right: 1em;background-color: "+ data.colour +"'></div>"+data.nickname+"</li><input id='editName' type='submit' value='Edit' style='margin-left: 1em'>");
 		socket.name = data.nickname;
 	} else {
 		$("#users").append("<li id=" + data.id + "><div class='colorChoice' style='background-color: "+ data.colour +"'></div>" + data.nickname + "</li>");
