@@ -1,15 +1,15 @@
 var $title = $('#title');
 var $startButton = $('#start-button');
-var host = false;
 
 var socket = io(window.location.origin+'/'+$title.attr('namespace'));
-
+socket.host = false;
 var namespace = $title.attr('namespace');
 
 socket.on('new_user', function(data) {
 	console.log('new', data.colour);
 	if (data.id === socket.id) {
 		$("#users").prepend("<li class='name' id="+ data.id +" type='text'><div class='colorChoice' style='background-color: "+ data.colour +"'></div>"+data.nickname+"</li><input id='editName' type='submit' value='Edit'>");
+		socket.name = data.nickname;
 	} else {
 		$("#users").append("<li id=" + data.id + "><div class='colorChoice' style='background-color: "+ data.colour +"'></div>" + data.nickname + "</li>");
 	}
@@ -48,6 +48,7 @@ $(document).on('click', '.editName', function (){
 $(document).on('click', '.newName', function (e) {
 	var name = $('.name').val();
 	console.log(name);
+	socket.name = name;
 	$('.name').replaceWith("<li class='name'>"+name+"</li>");
 	$('.newName').attr('class', 'editName');
 	$('.editName').attr('value', 'Edit');
@@ -59,11 +60,13 @@ function makehost(hostID) {
 	$startButton.click(function (e) {
 		socket.emit('start_game');
 	});
-	host = true
+	socket.host = true
 }
 
 socket.on('start_game', function(msg){
-	$('body').load('/game', 'namespace='+namespace, function(){
-		gametime(socket,host);
+	var users = msg;
+	console.log(users);
+	$('body').load('/game', 'namespace='+namespace , function(){
+		gametime(users, socket,host);
 	});
 });

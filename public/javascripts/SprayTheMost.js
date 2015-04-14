@@ -1,4 +1,4 @@
-function init(socket,host) {
+function init(users, socket, callback) {
     console.log("SprayTheMost init");
     var stage = new createjs.Stage("demoCanvas");
     var drawing = false;
@@ -8,7 +8,7 @@ function init(socket,host) {
     // createjs.Ticker.reset();
     // createjs.Ticker._inited = false;
     // createjs.Ticker.init();
-    
+
     createjs.Ticker.addEventListener("tick", onTick);
     createjs.Ticker.setFPS(60);
 
@@ -51,8 +51,6 @@ function init(socket,host) {
             }
         }
     }
-    
-
 
     stage.on('stagemousemove', function(event){
     	//console.log(event.stageX, event.stageY,socket.id);
@@ -76,13 +74,13 @@ function init(socket,host) {
 	       hash = str.charCodeAt(i) + ((hash << 5) - hash);
 	    }
 	    return hash;
-	}	 
+    }
 
 	function intToARGB(i){
     	return	((i>>16)&0xFF).toString(16) + 
 				((i>>8)&0xFF).toString(16) + 
 				(i&0xFF).toString(16);
-	} 
+	}
 
     socket.on('game message', function(msg){
         if(msg.title == "spraythemost" && msg.type == "paint"){
@@ -98,7 +96,6 @@ function init(socket,host) {
             txt.text = msg.val.toString();
             txt2.text = msg.val.toString();
         }
-    	
     });
 
     socket.on('game state', function(msg){
@@ -112,7 +109,6 @@ function init(socket,host) {
     socket.on('time tracker', function(msg){
        console.log('tracking time'); 
     });
-        
 
     function getScore(){
     	var canvas = document.getElementById('demoCanvas');
@@ -132,8 +128,8 @@ function init(socket,host) {
     		}
     	}
     	console.log(totals)
+        callback(totals);
 	}
-
 }
 
 //ED2D39
