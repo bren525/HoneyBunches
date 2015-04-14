@@ -23,12 +23,13 @@ module.exports = {
           nsp.emit('start_game',users);
         });
         socket.on('edit_user', function(msg) {
-          console.log(msg);
-          nsp.connected[msg.id].nickname = msg.nickname;
+          socket.nickname = msg.nickname;
+          users[socket.id].nickname=socket.nickname;
           nsp.emit('change_user', msg);
         });
         socket.on('color', function(msg) {
-          nsp.connected[msg.id].colour = msg.colour;
+          socket.colour = msg.colour;
+          users[socket.id].colour = socket.colour;
           nsp.emit('color', msg);
         });
         socket.on('disconnect', function(){
