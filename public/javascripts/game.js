@@ -1,6 +1,6 @@
 gametime = function(socket){
 	console.log(socket);
-	$.getScript('/javascripts/SprayTheMost.js', function(){
+	$.getScript('/javascripts/isThisForThat.js', function(){
 		init(socket);
 	});
 }
