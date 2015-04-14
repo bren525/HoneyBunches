@@ -19,6 +19,12 @@ socket.on('new_user', function(data) {
 	}
 });
 
+socket.on('disconnect', function(msg){
+	//Remove disconnected socket
+	console.log("Removing", msg);
+	$('#'+msg).remove();
+})
+
 socket.on('color', function(msg) {
 	//Change user's color
 	$('#'+msg.id).children('.colorChoice').css('background-color',msg.colour);
@@ -32,6 +38,7 @@ socket.on('change_user', function(data) {
 
 socket.on('host', function(data){
 	//Book keeping for host
+	console.log('New Host', data.host);
 	if (data.host === socket.id){
 		makehost(socket.id);
 	}
