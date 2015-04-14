@@ -45,12 +45,12 @@ socket.on('host', function(data){
 });
 
 socket.on('start_game', function(msg){
-	var users = msg;
+	var users = msg.users;
 	console.log(users);
 	//load game handlebars rendered by server and game js
 	$('body').load('/game', 'namespace='+namespace , function(){
 		//start game logic
-		gametime(users, socket);
+		gametime(users, socket, msg.game);
 	});
 });
 
@@ -86,7 +86,10 @@ function makehost(hostID) {
 	//Makes host specific controls
 	$startButton.text('Start the Game');
 	$startButton.click(function (e) {
-		socket.emit('start_game');
+		// Choose random game
+		var games = ['SprayTheMost','isThisForThat'];
+		var game = games[Math.floor(Math.random() * games.length)];
+		socket.emit('start_game', {game: game});
 	});
 	socket.host = true
 }

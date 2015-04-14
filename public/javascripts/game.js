@@ -1,11 +1,9 @@
 //List of all possible games
-var games = ['SprayTheMost'; 'isThisForThat'];
+var games = ['SprayTheMost','isThisForThat'];
 
 //Run game code
-gametime = function(users,socket){
+gametime = function(users,socket,game){
 	console.log('its game time!');
-	//Choose random game
-	var game = games[Math.floor(Math.random() * games.length)];
 	//Set display variables
 	$('#game-name').text(game);
 	$('#user').text($('#'+ socket.id).text());

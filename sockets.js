@@ -26,7 +26,10 @@ module.exports = {
         });
         socket.on('start_game', function(msg) {
           //Repeat all game starts
-          nsp.emit('start_game',users);
+          nsp.emit('start_game',{users: users, game: msg.game});
+        });
+        socket.on('game time', function(msg) {
+          nsp.emit('game time',users);
         });
         socket.on('edit_user', function(msg) {
           //Update nickname and repeat it

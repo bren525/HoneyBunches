@@ -21,8 +21,8 @@ function init(users, socket, callback) {
     txt2.x = 15;
 
     timerTicks = 0;
-    time = 30;
-    tickHelp = 30;
+    time = 25;
+    tickHelp = 25;
     state ="naming"
 
     stage.addChild(txt3);
@@ -154,26 +154,28 @@ function init(users, socket, callback) {
 	var responses = [];
 	var votes = [];
 	socket.on('game message', function(msg) {
-		if (msg.id) {
-			responses.push({id: msg.id, name: msg.name});
-			console.log(responses);
-		} else if (msg.vote) {
-			if (votes[msg.vote]) {
-				votes[msg.vote] += 1;
-			} else {
-				votes[msg.vote] = 1;
+		if (msg.title === "isThisForThat") {
+			if (msg.id) {
+				responses.push({id: msg.id, name: msg.name});
+				console.log(responses);
+			} else if (msg.vote) {
+				if (votes[msg.vote]) {
+					votes[msg.vote] += 1;
+				} else {
+					votes[msg.vote] = 1;
+				}
+				console.log(votes);
+			} else if (msg.business) {
+				txt = new createjs.Text();
+				txt.text = msg.business;
+				txt.font = "20px Arial";
+				txt.color = "#000000";
+				txt.x = 15;
+				txt.y = 90;
+				txt.lineWidth = 400;
+				stage.addChild(txt);
+				stage.update();
 			}
-			console.log(votes);
-		} else if (msg.business) {
-			txt = new createjs.Text();
-			txt.text = msg.business;
-			txt.font = "20px Arial";
-			txt.color = "#000000";
-			txt.x = 15;
-			txt.y = 90;
-			txt.lineWidth = 400;
-			stage.addChild(txt);
-			stage.update();
 		}
 	});
 
@@ -186,8 +188,8 @@ function init(users, socket, callback) {
 		stage.update();
 		makeButtons(responses);
 		timerTicks = 0;
-    	time = 20;
-    	tickHelp = 20;
+    	time = 15;
+    	tickHelp = 15;
 	}
 
 	function getScore() {
