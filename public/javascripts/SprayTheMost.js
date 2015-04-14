@@ -116,18 +116,26 @@ function init(users,socket,callback) {
         var bg = {r:255,g:255,b:255};
         var a = rgba.a;
 
-        return new Color(
-            (1 - a) * bg.r + a * rgba.r,
-            (1 - a) * bg.g + a * rgba.g,
-            (1 - a) * bg.b + a * rgba.b
-        );
+        return {r:(1 - a) * bg.r + a * rgba.r,
+            g:(1 - a) * bg.g + a * rgba.g,
+            b:(1 - a) * bg.b + a * rgba.b
+        };
+    }
+
+    function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
     }
 
     function getScore(){
     	var canvas = document.getElementById('demoCanvas');
     	var ctx = canvas.getContext('2d');
     	var image = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-    	$.each(users,function(i,v){
+    	$.each(users,function(k,v){
             v.score = 0;
         });
     	for(i = 0; i < image.length; i+=4){
@@ -136,14 +144,14 @@ function init(users,socket,callback) {
     		b = image[i+2]
     		a = image[i+3]
     		//rgb = image[i].toString()+ ','+ image[i+1].toString() +','+image[i+2].toString();
-    		if(rgb in totals){
-    			totals[rgb] += 1;
-    		}else{
-    			totals[rgb] = 1;
-    		}
+            var rgb = rgbaTOrgb({r:r,g:g,b:b,a:a});
+
+            /*$.each(users,function(k,v){
+                $.each(v.colour
+            });*/
     	}
-    	console.log(totals)
-        callback(totals);
+    	// console.log(totals)
+     //    callback(totals);
 	}
 }
 
