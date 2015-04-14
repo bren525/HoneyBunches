@@ -1,4 +1,4 @@
-function init(socket,host, callback) {
+function init(users,socket,callback) {
     console.log("SprayTheMost init");
     var stage = new createjs.Stage("demoCanvas");
     var drawing = false;
@@ -32,13 +32,13 @@ function init(socket,host, callback) {
 
     var timerTicks = 600;
 
-    if (host == true) {
+    if (socket.host == true) {
         socket.emit("game state",{title:'spraythemost',state:'running'});
     }
 
     function onTick(event){
         stage.update();
-        if (host == true) {
+        if (socket.host == true) {
             timerTicks -= 1;
             if(timerTicks%60 == 0 && state == "running"){
                 console.log((timerTicks/60));
@@ -85,7 +85,8 @@ function init(socket,host, callback) {
     socket.on('game message', function(msg){
         if(msg.title == "spraythemost" && msg.type == "paint"){
         	var circle = new createjs.Shape();
-    		circle.graphics.beginFill('#'+intToARGB(hashCode(msg.id).toString())).drawCircle(0, 0, 20);
+    		//circle.graphics.beginFill('#'+intToARGB(hashCode(msg.id).toString())).drawCircle(0, 0, 20);
+            circle.graphics.beginFill(users[msg.id]);
     		circle.x = msg.position.x;
     		circle.y = msg.position.y;
         	stage.addChild(circle);
@@ -109,6 +110,18 @@ function init(socket,host, callback) {
     socket.on('time tracker', function(msg){
        console.log('tracking time'); 
     });
+
+    function combineColors(rgba)
+    {
+        var bg = {r:255,g:255,b:255};
+        var a = color.a;
+
+        return new Color(
+            (1 - a) * bg.r + a * rgba.r,
+            (1 - a) * bg.g + a * rgba.g,
+            (1 - a) * bg.b + a * rgba.b
+        );
+    }
 
     function getScore(){
     	var canvas = document.getElementById('demoCanvas');
