@@ -47,6 +47,10 @@ table {
 	border-spacing: 0;
 }
 
+#topBar, #sideBar {
+	font-family: 'Merriweather', serif;
+}
+
 #topBar {
 	width: 100%;
 	background-color: #8bb;

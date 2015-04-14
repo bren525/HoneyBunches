@@ -1,20 +1,22 @@
 <ul id="topBar">
 	<li id='user'>{{mainuser}}</li>
 	<li>{{namespace}}</li>
-	<li>{{game}}</li>
+	<li id='game-name'>{{game}}</li>
 </ul>
 
 
 <ul id='sideBar'>
 {{#each users}}
 	<div class='container'>
-		<li id={{this.id}}>{{this.nickname}} {{this.score}}</li>
+		<li style="background-color: {{this.colour}}" id={{this.id}}>{{this.nickname}} {{this.score}}</li>
 	</div>
 {{/each}}
 </ul>
 
 
 <canvas id="demoCanvas" width="500" height="300"></canvas>
+
+<div id="inputs"></div>
 
 <script type="text/javascript" src="../../javascripts/game.js"></script>
 <link rel="stylesheet" type="text/css" href="../stylesheets/game.css">

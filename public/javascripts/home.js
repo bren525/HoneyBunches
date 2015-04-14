@@ -1,6 +1,8 @@
+
 var $flippingName = $(".flipping-name");
 var curentName = $flippingName.text();
 
+//Change Honey Bunches of _____
 function changeName () {
 	$.get("/namespace", function (name){
 		curentName = name;
@@ -11,8 +13,10 @@ function changeName () {
 	});
 };
 
+//Set Timer
 setInterval(changeName, 2500);
 
+//On Click for creating namespace and redirect
 $flippingName.click(function () {
 	console.log(curentName);
 	$.post("/of/"+curentName, function () {
