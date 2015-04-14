@@ -7,6 +7,7 @@ var gameRooms = {};
 module.exports = function(io){
   return {
     getHome: function(req, res){
+      //Get homepage with a random honey bunch
       console.log("Getting Homepage");
       var name = names[Math.floor(Math.random() * names.length)];
       console.log("Initial Name is", name);
@@ -14,10 +15,12 @@ module.exports = function(io){
     },
 
     getNamespace: function(req, res){
+      //Returns random namespace name from our list
       res.json(names[Math.floor(Math.random() * names.length)]);
     },
 
     postGameRoom: function(req, res){
+      //Makes a namespace people can play in
       if(names.indexOf(req.params.namespace)!=-1){
         names.splice(names.indexOf(req.params.namespace), 1);
         gameRooms[req.params.namespace] = io.of(req.params.namespace);
@@ -30,6 +33,7 @@ module.exports = function(io){
     },
 
     getLobby: function(req, res){
+      //Renders lobby page
       req.session.namespace = req.params.namespace;
       req.session.save();
       var clients = io.of(req.params.namespace).connected;
@@ -41,11 +45,8 @@ module.exports = function(io){
       res.render('lobby', {"namespace": req.params.namespace, "users": users, "colors": colors});
     },
 
-    editUser: function(req, res){
-      console.log(req.body);
-    },
-
     getGame: function(req, res){
+      //Render game page
       req.session.namespace = req.query.namespace;
       req.session.save();
       var clients = io.of(req.query.namespace).connected;
