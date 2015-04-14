@@ -86,7 +86,7 @@ function init(users,socket,callback) {
         if(msg.title == "spraythemost" && msg.type == "paint"){
         	var circle = new createjs.Shape();
     		//circle.graphics.beginFill('#'+intToARGB(hashCode(msg.id).toString())).drawCircle(0, 0, 20);
-            circle.graphics.beginFill(users[msg.id]);
+            circle.graphics.beginFill(users[msg.id].colour).drawCircle(0, 0, 20);
     		circle.x = msg.position.x;
     		circle.y = msg.position.y;
         	stage.addChild(circle);
@@ -111,10 +111,10 @@ function init(users,socket,callback) {
        console.log('tracking time'); 
     });
 
-    function combineColors(rgba)
+    function rgbaTOrgb(rgba)
     {
         var bg = {r:255,g:255,b:255};
-        var a = color.a;
+        var a = rgba.a;
 
         return new Color(
             (1 - a) * bg.r + a * rgba.r,
@@ -127,13 +127,15 @@ function init(users,socket,callback) {
     	var canvas = document.getElementById('demoCanvas');
     	var ctx = canvas.getContext('2d');
     	var image = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-    	totals = {}
+    	$.each(users,function(i,v){
+            v.score = 0;
+        });
     	for(i = 0; i < image.length; i+=4){
     		r = image[i]
     		g = image[i+1]
     		b = image[i+2]
     		a = image[i+3]
-    		rgb = image[i].toString()+ ','+ image[i+1].toString() +','+image[i+2].toString();
+    		//rgb = image[i].toString()+ ','+ image[i+1].toString() +','+image[i+2].toString();
     		if(rgb in totals){
     			totals[rgb] += 1;
     		}else{
