@@ -15,6 +15,7 @@ var io = require('socket.io')(http);
 var gameRoom = require("./routes/gameRoom")(io);
 var apis = require("./routes/apis")(io);
 
+//Middleware stack
 app.engine("handlebars", exphbs({defaultLayout: "main"}));
 app.set("view engine", "handlebars");
 app.use(logger("dev"));
@@ -28,6 +29,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
+//App Routing
 app.get("/", gameRoom.getHome);
 app.get("/namespace", gameRoom.getNamespace);
 app.get("/of/:namespace", gameRoom.getLobby);
@@ -35,7 +37,6 @@ app.get("/game", gameRoom.getGame);
 app.get("/isthisforthat", apis.isThisForThat);
 
 app.post("/of/:namespace", gameRoom.postGameRoom);
-
 
 http.listen(PORT);
 

@@ -50,11 +50,15 @@ table {
 #main {
 	max-width: 1024px;
 	margin: 1em auto;
+	font-family: 'Merriweather', serif;
 }
 
 #title {
 	width: 100%;
 	font-size: 2.5em;
+	padding-bottom: 0.5em;
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
 }
 
 .container {
@@ -75,10 +79,31 @@ table {
 }
 
 #users {
-	margin: 0 auto;
+	position: relative;
+	float: left;
 	width: 25%;
 }
 
-#editName, #name {
+.editName, .name {
 	display: inline-block;
+}
+
+#colorGrid {
+	position: relative;
+	float: right;
+	width: 16em;
+}
+
+.colorBlock {
+	position: relative;
+	float: right;
+	width: 4em;
+	height: 4em;
+}
+
+.colorChoice {
+	position: relative;
+	float: left;
+	width: 1em;
+	height: 1em;
 }
