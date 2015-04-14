@@ -54,33 +54,17 @@ function init(users,socket,callback) {
 
     stage.on('stagemousemove', function(event){
     	//console.log(event.stageX, event.stageY,socket.id);
-    	if(drawing){
+    	if(drawing && state == "running"){
 	    	socket.emit('game message',{title:'spraythemost',type:'paint',id:socket.id,position:{x:event.stageX,y:event.stageY}});
 	    }
     });
 
     stage.on('stagemousedown',function(event){
-    	if(state == "running"){
             drawing = true;
-        }
     });
     stage.on('stagemouseup',function(event){
     	drawing = false;
     });
-
-    function hashCode(str) { // java String#hashCode
-	    var hash = 0;
-	    for (var i = 0; i < str.length; i++) {
-	       hash = str.charCodeAt(i) + ((hash << 5) - hash);
-	    }
-	    return hash;
-    }
-
-	function intToARGB(i){
-    	return	((i>>16)&0xFF).toString(16) + 
-				((i>>8)&0xFF).toString(16) + 
-				(i&0xFF).toString(16);
-	}
 
     socket.on('game message', function(msg){
         if(msg.title == "spraythemost" && msg.type == "paint"){
@@ -107,21 +91,6 @@ function init(users,socket,callback) {
         }
     });
 
-    socket.on('time tracker', function(msg){
-       console.log('tracking time'); 
-    });
-
-    function rgbaTOrgb(rgba)
-    {
-        var bg = {r:255,g:255,b:255};
-        var a = rgba.a;
-
-        return {r:(1 - a) * bg.r + a * rgba.r,
-            g:(1 - a) * bg.g + a * rgba.g,
-            b:(1 - a) * bg.b + a * rgba.b
-        };
-    }
-
     function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -143,15 +112,17 @@ function init(users,socket,callback) {
     		g = image[i+1]
     		b = image[i+2]
     		a = image[i+3]
-    		//rgb = image[i].toString()+ ','+ image[i+1].toString() +','+image[i+2].toString();
-            var rgb = rgbaTOrgb({r:r,g:g,b:b,a:a});
-
-            /*$.each(users,function(k,v){
-                $.each(v.colour
-            });*/
+            pixelrgb = {r:r,g:g,b:b,a:a}
+            $.each(users,function(k,v){
+                var userrgb = hexToRgb(v.colour);
+                if(Math.abs(pixelrgb.r - userrgb.r) < 5 && Math.abs(pixelrgb.g - userrgb.g) < 5 && Math.abs(pixelrgb.b - userrgb.b) < 5){
+                    v.score += 1;
+                }
+            });
     	}
+        console.log(users);
     	// console.log(totals)
-     //    callback(totals);
+        // callback(totals);
 	}
 }
 

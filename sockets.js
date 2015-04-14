@@ -9,7 +9,7 @@ module.exports = {
       }
       getNickname(function(animal) {
         socket.nickname = animal;
-        socket.colour = '#000';
+        socket.colour = '#000000';
         users[socket.id] = {nickname: socket.nickname, colour:socket.colour};
         nsp.emit('new_user', {id: socket.id, nickname: socket.nickname, colour: socket.colour});
         console.log('a user connected to', nsp.name);
