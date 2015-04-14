@@ -82,3 +82,23 @@ table {
 #editName, #name {
 	display: inline-block;
 }
+
+#colorGrid {
+	position: relative;
+	float: right;
+	width: 16em;
+}
+
+.colorBlock {
+	position: relative;
+	float: right;
+	width: 4em;
+	height: 4em;
+}
+
+.colorChoice {
+	position: relative;
+	float: left;
+	width: 1em;
+	height: 1em;
+}
