@@ -13,6 +13,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 var gameRoom = require("./routes/gameRoom")(io);
+var apis = require("./routes/apis")(io);
 
 //Middleware stack
 app.engine("handlebars", exphbs({defaultLayout: "main"}));
@@ -33,6 +34,7 @@ app.get("/", gameRoom.getHome);
 app.get("/namespace", gameRoom.getNamespace);
 app.get("/of/:namespace", gameRoom.getLobby);
 app.get("/game", gameRoom.getGame);
+app.get("/isthisforthat", apis.isThisForThat);
 
 app.post("/of/:namespace", gameRoom.postGameRoom);
 
