@@ -11,7 +11,7 @@ socket.on('new_user', function(data) {
 	console.log('new', data.colour);
 	if (data.id === socket.id) {
 		//Add user and button to list
-		$("#users").prepend("<li class='name' id="+ data.id +" type='text'><div class='colorChoice' style='margin-right: 1em;background-color: "+ data.colour +"'></div>"+data.nickname+"</li><input id='editName' type='submit' value='Edit' style='margin-left: 1em'>");
+		$("#users").prepend("<li class='name' id="+ data.id +" type='text'><div class='colorChoice' style='margin-right: 1em;background-color: "+ data.colour +"'></div>"+data.nickname+"</li><input class='editName' type='submit' value='Edit' style='margin-left: 1em'>");
 		socket.name = data.nickname;
 	} else {
 		//Add new user to list
@@ -22,7 +22,6 @@ socket.on('new_user', function(data) {
 socket.on('color', function(msg) {
 	//Change user's color
 	$('#'+msg.id).children('.colorChoice').css('background-color',msg.colour);
-	console.log(msg);
 })
 
 socket.on('change_user', function(data) {
@@ -57,6 +56,7 @@ $('.colorBlock').click(function(){
 
 $(document).on('click', '.editName', function (){
 	//Switch state from editing name to submit and makes text box
+	console.log("clickedy clacking");
 	var name= $('.name').text();
 	$('.name').replaceWith("<input type='text', class='name', value='" + name +"'></input>");
 	$('.editName').attr('class', 'newName');
