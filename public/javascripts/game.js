@@ -29,6 +29,7 @@ gametime = function(users,socket){
 				stage = new createjs.Stage("demoCanvas");
 				$(document).off('game');
 				createjs.Ticker.removeAllEventListeners();
+				socket.removeListener('game_message');
 				play_game();
 			});
 			$(document).trigger('game');
