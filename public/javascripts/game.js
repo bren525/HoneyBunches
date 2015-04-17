@@ -21,20 +21,18 @@ gametime = function(users,socket){
 
 	socket.on('new_game', function(game){
 		$('#game-name').text(game);
-		$(document).on('game', function () {
-			$.getScript('../javascripts/'+game+'.js', function(){
-				init(users, socket, stage,  function (scores){
-					console.log('scores', scores);
-					stage.enableDOMEvents(false);
-					$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width='1000' height='600'></canvas>")
-					stage.canvas = document.getElementById("demoCanvas");
-					stage.enableDOMEvents(true);
-					$(document).off('game');
-					play_game();
-				});
+		$(document).on('game', $.getScript('../javascripts/'+game+'.js', function(){
+			init(users, socket, stage,  function (scores){
+				console.log('scores', scores);
+				stage.enableDOMEvents(false);
+				$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width='1000' height='600'></canvas>")
+				stage = new createjs.Stage("demoCanvas");
+				$(document).off('game');
+				createjs.Ticker.removeAllEventListeners();
+				play_game();
 			});
-		})
-		$(document).trigger('game');
-	})
-}
+			$(document).trigger('game');
+		}))
+	});
+};
 
