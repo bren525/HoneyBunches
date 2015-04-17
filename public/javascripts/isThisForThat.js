@@ -47,7 +47,7 @@ function init(users, socket, stage, callback) {
         }
 
     }
-    // end 
+    // end
 
 	var header = new createjs.Text();
 	header.text = "Name this fictional business:";
@@ -65,7 +65,7 @@ function init(users, socket, stage, callback) {
 	var label = new createjs.Text("Submit Name", "bold 12px Arial", "black");
 	label.name = "label";
 	label.textAlign = "center";
-	label.textBaseline = "middle"; 
+	label.textBaseline = "middle";
 	label.x = 120/2;
 	label.y = 35/2;
 
@@ -81,7 +81,7 @@ function init(users, socket, stage, callback) {
 			var rlabel = new createjs.Text(responses[i].name, "bold 12px Arial", "black");
 			rlabel.name = responses[i].id;
 			rlabel.textAlign = "center";
-			rlabel.textBaseline = "middle"; 
+			rlabel.textBaseline = "middle";
 			rlabel.lineWidth = 120;
 			rlabel.x = 120/2;
 			rlabel.y = 35/2;
@@ -89,11 +89,11 @@ function init(users, socket, stage, callback) {
 			var rbackground = new createjs.Shape();
 			rbackground.name = responses[i].id;
 			rbackground.graphics.beginFill("#00F5FF").drawRoundRect(0, 0, 120, 35, 5);
-			
+
 			responseButtons.push(new createjs.Container());
 			responseButtons[i].name = responses[i].id;
 			responseButtons[i].addChild(rbackground, rlabel);
-			responseButtons[i].x = (i % 4) * ((300 / 4) + 50); 
+			responseButtons[i].x = (i % 4) * ((300 / 4) + 50);
 			responseButtons[i].y = 140 + Math.floor(i / 4) * 50;
 			responseButtons[i].addEventListener("click", voteClick);
 			stage.addChild(responseButtons[i]);
