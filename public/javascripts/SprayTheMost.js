@@ -101,7 +101,7 @@ function init(users,socket,callback) {
     }
 
     function getScore(){
-    	var canvas = document.getElementById('demoCanvas');
+    	/*var canvas = document.getElementById('demoCanvas');
     	var ctx = canvas.getContext('2d');
     	var image = ctx.getImageData(0,0,canvas.width,canvas.height).data;
     	$.each(users,function(k,v){
@@ -120,8 +120,8 @@ function init(users,socket,callback) {
                 }
             });
     	}
-        var scores = {}
-        var max = {id="",score=0};
+
+        var max = {id:"",score:0};
         $.each(users,function(k,v){
             if(v.score>max.score){
                 max.score = v.score;
@@ -129,7 +129,7 @@ function init(users,socket,callback) {
             }
         });
     	
-        callback({max.id:max.score});
+        callback({max.id:max.score});*/
 	}
 }
 

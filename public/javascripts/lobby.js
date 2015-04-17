@@ -87,7 +87,7 @@ function makehost(hostID) {
 	$startButton.text('Start the Game');
 	$startButton.click(function (e) {
 		// Choose random game
-		var games = ['SprayTheMost','isThisForThat'];
+		var games = ['SprayTheMost'/*,'isThisForThat'*/];
 		var game = games[Math.floor(Math.random() * games.length)];
 		socket.emit('start_game', {game: game});
 	});
