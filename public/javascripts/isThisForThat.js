@@ -1,6 +1,5 @@
-function init(users, socket, callback) {
+function init(users, socket, stage, callback) {
 	console.log("running isthisforthat...");
-	var stage = new createjs.Stage("demoCanvas");
 
 	// time from spray the most
 	createjs.Ticker.addEventListener("tick", onTick);
@@ -214,7 +213,12 @@ function init(users, socket, callback) {
 			scores[i].y = ((i+1) % 15) * (500 / 15);
 			scores[i].lineWidth = 280;
 			stage.addChild(scores[i]);
-		} 
+		}
 		stage.update();
+		stage.autoClear = true; // This must be true to clear the stage.
+		stage.removeAllChildren();
+		stage.update();
+
+		callback();
 	}
 }

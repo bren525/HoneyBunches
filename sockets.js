@@ -29,8 +29,12 @@ module.exports = {
         });
         socket.on('start_game', function(msg) {
           //Repeat all game starts
-          nsp.emit('start_game',{users: users, game: msg.game});
+          nsp.emit('start_game',{users: users});
         });
+        socket.on('new_game', function(msg){
+          //Repeat game to play
+          nsp.emit('new_game',msg.game);
+        })
         socket.on('game time', function(msg) {
           nsp.emit('game time',users);
         });

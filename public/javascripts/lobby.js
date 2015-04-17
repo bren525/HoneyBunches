@@ -50,7 +50,7 @@ socket.on('start_game', function(msg){
 	//load game handlebars rendered by server and game js
 	$('body').load('/game', 'namespace='+namespace , function(){
 		//start game logic
-		gametime(users, socket, msg.game);
+		gametime(users, socket);
 	});
 });
 
@@ -86,10 +86,8 @@ function makehost(hostID) {
 	//Makes host specific controls
 	$startButton.text('Start the Game');
 	$startButton.click(function (e) {
-		// Choose random game
-		var games = ['SprayTheMost'/*,'isThisForThat'*/];
-		var game = games[Math.floor(Math.random() * games.length)];
-		socket.emit('start_game', {game: game});
+	socket.emit('start_game');
+
 	});
 	socket.host = true
 }

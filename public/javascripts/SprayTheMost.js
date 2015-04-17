@@ -1,6 +1,5 @@
-function init(users,socket,callback) {
+function init(users, socket, stage, callback) {
     console.log("SprayTheMost init");
-    var stage = new createjs.Stage("demoCanvas");
     var drawing = false;
     var state = "loading";
 
@@ -130,6 +129,14 @@ function init(users,socket,callback) {
         });
     	
         callback({max.id:max.score});*/
+
+    	// console.log(totals)
+        
+        stage.autoClear = true; // This must be true to clear the stage.
+        stage.removeAllChildren();
+        stage.update();
+        callback();
+
 	}
 }
 
