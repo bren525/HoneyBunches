@@ -3,6 +3,7 @@ module.exports = {
   //Function to call to bind functions to each new namespace
   bindNamespace : function (nsp){
     nsp.users={}
+    nsp.waiting = [];
     nsp.on('connection', function(socket){
       if(Object.keys(nsp.connected).length === 1){
         nsp.host = socket.id;
@@ -23,10 +24,7 @@ module.exports = {
           //Repeat all game messages
           nsp.emit('game message',msg);
         });
-        socket.on('game state', function(msg) {
-          //Repeat all game state changes
-          nsp.emit('game state',msg);
-        });
+
         socket.on('start_game', function(msg) {
           //Repeat all game starts
           nsp.emit('start_game',{users: nsp.users});
@@ -34,6 +32,20 @@ module.exports = {
         socket.on('new_game', function(msg){
           //Repeat game to play
           nsp.emit('new_game',msg.game);
+        })
+        socket.on('game_unloaded', function(msg){
+          nsp.waiting.splice(nsp.waiting.indexOf(socket.id),1);
+          console.log('game unloaded:', nsp.waiting);
+          if(nsp.waiting.length === 0){
+            nsp.emit('game_unloaded');
+          }
+        });
+        socket.on('game_ready', function(msg) {
+          nsp.waiting.push(socket.id);
+          console.log('game ready', nsp.waiting);
+          if(nsp.waiting.length === Object.keys(nsp.users).length){
+            nsp.emit('game_ready');
+          }
         })
         socket.on('game time', function(msg) {
           nsp.emit('game time',nsp.users);
