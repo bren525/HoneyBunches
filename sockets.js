@@ -34,13 +34,15 @@ module.exports = {
           nsp.emit('new_game',msg.game);
         })
         socket.on('game_unloaded', function(msg){
-          nsp.waiting.splice(nsp.ready.indexOf(socket.id),1);
+          nsp.waiting.splice(nsp.waiting.indexOf(socket.id),1);
+          console.log('game unloaded:', nsp.waiting);
           if(nsp.waiting.length === 0){
             nsp.emit('game_unloaded');
           }
         });
         socket.on('game_ready', function(msg) {
           nsp.waiting.push(socket.id);
+          console.log('game ready', nsp.waiting);
           if(nsp.waiting.length === Object.keys(users).length){
             nsp.emit('game_ready');
           }
