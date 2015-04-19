@@ -50,6 +50,10 @@ var currentGame = {
                     drawing = false;
                 }
             }
+            if(msg.title == "spraythemost" && msg.type == "winner"){
+                displayWinner(msg.max);
+
+            }
 
         });
 
@@ -66,9 +70,11 @@ var currentGame = {
                     socket.emit("game message",{title:'spraythemost',type:'time',val:(timerTicks/60)});
                 }
                 if(timerTicks == 0){
-                    socket.emit("game state", {title:'spraythemost',state:"scoring"});
+                    socket.emit("game message",{title:'spraythemost',type:'state',state:'scoring'});
                     state = "game over";
-                    getScore();
+                    if(socket.host){
+                        getScore();
+                    }
                 }
             }
         }
@@ -97,6 +103,39 @@ var currentGame = {
                 g: parseInt(result[2], 16),
                 b: parseInt(result[3], 16)
             } : null;
+        }
+
+        function displayWinner(max){
+
+            if(max.id == "none"){
+                callback();
+            }
+
+            console.log(max);
+            var winner = {};
+            winner[max.id] = 1;
+
+            var wintxt = new createjs.Text();
+            wintxt.text = users[max.id].nickname;
+            wintxt.font = "50px Arial";
+            wintxt.color = "#000000";
+            wintxt.outline = 5;
+            wintxt.x = 200;
+            wintxt.alpha = 0;
+
+
+
+            stage.addChild(wintxt);
+            stage.update();
+            console.log("winner!",users[max.id].nickname);
+
+            createjs.Tween.get(wintxt).to({alpha:1},5000).call(function(){
+                stage.autoClear = true; // This must be true to clear the stage.
+                stage.removeAllChildren();
+                stage.update();
+
+                callback(winner);
+            });
         }
 
         function getScore(){
@@ -131,37 +170,7 @@ var currentGame = {
                 }
             });
 
-            if(max.id == "none"){
-                callback();
-            }
-
-            console.log(max);
-            var winner = {};
-            winner[max.id] = 1;
-
-            var wintxt = new createjs.Text();
-            wintxt.text = users[max.id].nickname;
-            wintxt.font = "50px Arial";
-            wintxt.color = "#000000";
-            wintxt.outline = 5;
-            wintxt.x = 200;
-            wintxt.alpha = 0;
-
-
-
-            stage.addChild(wintxt);
-            stage.update();
-            console.log("winner!",users[max.id].nickname);
-
-            createjs.Tween.get(wintxt).to({alpha:1},5000).call(function(){
-                stage.autoClear = true; // This must be true to clear the stage.
-                stage.removeAllChildren();
-                stage.update();
-
-                callback(winner);
-            });
-
-
+            socket.emit('game message',{title:'spraythemost',type:'winner',max:max});
 
 	   }
     }
