@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['SprayTheMost'/*,'isThisForThat'*/];
+var games = ['SprayTheMost','isThisForThat'];
 
 var loadedGames = {};
 //Run game code
