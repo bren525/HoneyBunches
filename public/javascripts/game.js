@@ -51,6 +51,7 @@ gametime = function(users,socket){
 
 	function attachGame (gameInit) {
 		$(document).on('game', gameInit(users, socket, stage,  function (scores){
+			console.log('Unloading Game!');
 			stage.enableDOMEvents(false);
 			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width='1000' height='600'></canvas>")
 			stage = new createjs.Stage("demoCanvas");
