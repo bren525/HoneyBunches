@@ -31,8 +31,34 @@ function init(users, socket, stage, callback) {
 
     var timerTicks = 600;
 
+    socket.on('game message', function(msg){
+        if(msg.title == "spraythemost" && msg.type == "paint"){
+            var circle = new createjs.Shape();
+            //circle.graphics.beginFill('#'+intToARGB(hashCode(msg.id).toString())).drawCircle(0, 0, 20);
+            circle.graphics.beginFill(users[msg.id].colour).drawCircle(0, 0, 20);
+            circle.x = msg.position.x;
+            circle.y = msg.position.y;
+            stage.addChild(circle);
+            stage.setChildIndex(circle,stage.getNumChildren()-3);
+        }
+
+        if(msg.title == "spraythemost" && msg.type == "time"){
+            txt.text = msg.val.toString();
+            txt2.text = msg.val.toString();
+        }
+        if(msg.title == "spraythemost" && msg.type == "state"){
+            state = msg.state;
+            console.log(state);
+            if(state == 'scoring'){
+                drawing = false;
+            }
+        }
+
+    });
+
+
     if (socket.host == true) {
-        socket.emit("game state",{title:'spraythemost',state:'running'});
+        socket.emit("game message",{title:'spraythemost',type:'state',state:'running'});
     }
 
     function onTick(event){
@@ -40,7 +66,6 @@ function init(users, socket, stage, callback) {
         if (socket.host == true) {
             timerTicks -= 1;
             if(timerTicks%60 == 0 && state == "running"){
-                console.log((timerTicks/60));
                 socket.emit("game message",{title:'spraythemost',type:'time',val:(timerTicks/60)});
             }
             if(timerTicks == 0){
@@ -59,36 +84,12 @@ function init(users, socket, stage, callback) {
     });
 
     stage.on('stagemousedown',function(event){
-            drawing = true;
+        drawing = true;
     });
     stage.on('stagemouseup',function(event){
     	drawing = false;
     });
 
-    socket.on('game message', function(msg){
-        if(msg.title == "spraythemost" && msg.type == "paint"){
-        	var circle = new createjs.Shape();
-    		//circle.graphics.beginFill('#'+intToARGB(hashCode(msg.id).toString())).drawCircle(0, 0, 20);
-            circle.graphics.beginFill(users[msg.id].colour).drawCircle(0, 0, 20);
-    		circle.x = msg.position.x;
-    		circle.y = msg.position.y;
-        	stage.addChild(circle);
-            stage.setChildIndex(circle,stage.getNumChildren()-3);
-        }
-
-        if(msg.title == "spraythemost" && msg.type == "time"){
-            txt.text = msg.val.toString();
-            txt2.text = msg.val.toString();
-        }
-    });
-
-    socket.on('game state', function(msg){
-        state = msg.state;
-        console.log(state);
-        if(state == 'scoring'){
-            drawing = false;
-        }
-    });
 
     function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -103,15 +104,17 @@ function init(users, socket, stage, callback) {
     	var canvas = document.getElementById('demoCanvas');
     	var ctx = canvas.getContext('2d');
     	var image = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-    	$.each(users,function(k,v){
+
+        $.each(users,function(k,v){
+            console.log(users)
             v.score = 0;
         });
     	for(i = 0; i < image.length; i+=4){
-    		r = image[i]
-    		g = image[i+1]
-    		b = image[i+2]
-    		a = image[i+3]
-            pixelrgb = {r:r,g:g,b:b,a:a}
+    		r = image[i];
+    		g = image[i+1];
+    		b = image[i+2];
+    		a = image[i+3];
+            pixelrgb = {r:r,g:g,b:b,a:a};
             $.each(users,function(k,v){
                 var userrgb = hexToRgb(v.colour);
                 if(Math.abs(pixelrgb.r - userrgb.r) < 5 && Math.abs(pixelrgb.g - userrgb.g) < 5 && Math.abs(pixelrgb.b - userrgb.b) < 5){
@@ -120,22 +123,40 @@ function init(users, socket, stage, callback) {
             });
     	}
 
-        var max = {"id":"","score":0};
+        var max = {"id":"none","score":0};
         $.each(users,function(k,v){
+            console.log("score",v.score);
             if(v.score>max.score){
                 max.score = v.score;
                 max.id = k;
             }
         });
-    	
-        callback({max.id:max.score});
 
-    	// console.log(totals)
-        
-        stage.autoClear = true; // This must be true to clear the stage.
-        stage.removeAllChildren();
+        var winner = {};
+        winner[max.id] = 1;
+
+        var wintxt = new createjs.Text();
+        wintxt.text = users[max.id].nickname;
+        wintxt.font = "50px Arial";
+        wintxt.color = "#000000";
+        wintxt.outline = 5;
+        wintxt.x = 200;
+        wintxt.alpha = 0;
+
+
+
+        stage.addChild(wintxt);
         stage.update();
-        callback();
+
+        createjs.Tween.get(wintxt).to({alpha:1},5000).call(function(){
+            stage.autoClear = true; // This must be true to clear the stage.
+            stage.removeAllChildren();
+            stage.update();
+
+            callback(winner);
+        });
+
+
 
 	}
 }
