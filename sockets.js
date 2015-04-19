@@ -3,6 +3,7 @@ var users = {};
 module.exports = {
   //Function to call to bind functions to each new namespace
   bindNamespace : function (nsp){
+    nsp.waiting = [];
     nsp.on('connection', function(socket){
       if(Object.keys(nsp.connected).length === 1){
         nsp.host = socket.id;
@@ -31,6 +32,18 @@ module.exports = {
         socket.on('new_game', function(msg){
           //Repeat game to play
           nsp.emit('new_game',msg.game);
+        })
+        socket.on('game_unloaded', function(msg){
+          nsp.waiting.splice(nsp.ready.indexOf(socket.id),1);
+          if(nsp.waiting.length === 0){
+            nsp.emit('game_unloaded');
+          }
+        });
+        socket.on('game_ready', function(msg) {
+          nsp.waiting.push(socket.id);
+          if(nsp.waiting.length === Object.keys(users).length){
+            nsp.emit('game_ready');
+          }
         })
         socket.on('game time', function(msg) {
           nsp.emit('game time',users);
