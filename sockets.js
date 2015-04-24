@@ -1,8 +1,8 @@
 var request = require('request');
-var users = {};
 module.exports = {
   //Function to call to bind functions to each new namespace
   bindNamespace : function (nsp){
+    nsp.users={}
     nsp.waiting = [];
     nsp.on('connection', function(socket){
       if(Object.keys(nsp.connected).length === 1){
@@ -12,22 +12,22 @@ module.exports = {
       getNickname(function(animal) {
         //What to do after getting the nickname
         socket.nickname = animal;
-        socket.colour = '#000';
+
+        socket.colour = '#000000';
+
         //Add user to users object
-        users[socket.id] = {nickname: socket.nickname, colour:socket.colour};
+
+        nsp.users[socket.id] = {nickname: socket.nickname, colour:socket.colour};
         nsp.emit('new_user', {id: socket.id, nickname: socket.nickname, colour: socket.colour});
         console.log('a user connected to', nsp.name);
         socket.on('game message', function(msg) {
           //Repeat all game messages
           nsp.emit('game message',msg);
         });
-        socket.on('game state', function(msg) {
-          //Repeat all game state changes
-          nsp.emit('game state',msg);
-        });
+
         socket.on('start_game', function(msg) {
           //Repeat all game starts
-          nsp.emit('start_game',{users: users});
+          nsp.emit('start_game',{users: nsp.users});
         });
         socket.on('new_game', function(msg){
           //Repeat game to play
@@ -43,35 +43,36 @@ module.exports = {
         socket.on('game_ready', function(msg) {
           nsp.waiting.push(socket.id);
           console.log('game ready', nsp.waiting);
-          if(nsp.waiting.length === Object.keys(users).length){
+          if(nsp.waiting.length === Object.keys(nsp.users).length){
             nsp.emit('game_ready');
           }
         })
         socket.on('game time', function(msg) {
-          nsp.emit('game time',users);
+          nsp.emit('game time',nsp.users);
         });
         socket.on('edit_user', function(msg) {
           //Update nickname and repeat it
           socket.nickname = msg.nickname;
-          users[socket.id].nickname=socket.nickname;
+          nsp.users[socket.id].nickname=socket.nickname;
           nsp.emit('change_user', msg);
         });
         socket.on('color', function(msg) {
           //Update color and repeat it
           socket.colour = msg.colour;
-          users[socket.id].colour = socket.colour;
+          nsp.users[socket.id].colour = socket.colour;
           nsp.emit('color', msg);
         });
         socket.on('disconnect', function(){
           console.log('user disconnected from', nsp.name);
           nsp.emit('disconnect', socket.id);
           if(nsp.host === socket.id){
-            var userIds = Object.keys(users)
+            var userIds = Object.keys(nsp.users)
             nsp.host = userIds[Math.floor(Math.random()*userIds.length)];
             console.log("new host", nsp.host);
             nsp.emit('host', {host: nsp.host});
           }
-          delete users[socket.id];
+
+          delete nsp.users[socket.id];
         });
       });
     });

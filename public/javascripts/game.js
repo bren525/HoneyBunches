@@ -57,7 +57,10 @@ gametime = function(users,socket){
 			stage = new createjs.Stage("demoCanvas");
 			$(document).off('game');
 			createjs.Ticker.removeAllEventListeners();
-			socket.removeListener('game_message');
+			socket.removeListener('game message');
+
+			createjs.Ticker.addEventListener("tick",createjs.Tween);
+
 			socket.emit('game_unloaded');
 			console.log('Game unloaded!');
 		}));

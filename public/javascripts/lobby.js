@@ -86,7 +86,8 @@ function makehost(hostID) {
 	//Makes host specific controls
 	$startButton.text('Start the Game');
 	$startButton.click(function (e) {
-		socket.emit('start_game');
+	socket.emit('start_game');
+
 	});
 	socket.host = true
 }
