@@ -1,11 +1,9 @@
 //List of all possible games
-var games = ['SprayTheMost','isThisForThat'];
+var games = ['SprayTheMost'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
 
-$canvas.attr('width', $canvasContainer.width()); //max width
-$canvas.attr('height', $canvasContainer.height()); //max height
 
 var loadedGames = {};
 //Run game code
@@ -14,6 +12,9 @@ gametime = function(users,socket){
 	//Set display variables
 	$('#user').text($('#'+ socket.id).text());
 	//Loads and starts game logic
+
+	$canvas.attr('width', $canvasContainer.width()); //max width
+	$canvas.attr('height', $canvasContainer.height()); //max height
 
 	var stage = new createjs.Stage("demoCanvas");
 	var preload = new createjs.LoadQueue();
