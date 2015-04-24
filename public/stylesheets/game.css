@@ -53,6 +53,7 @@ table {
 
 #topBar {
 	width: 100%;
+	height:10%;
 	background-color: #8bb;
 	padding: .5em .2em;
 }
@@ -69,11 +70,17 @@ table {
 }
 
 #sideBar {
-	width: 200px;
+	width: 15%;
 	background-color: #a4d;
 }
 
 #sideBar li {
-	padding: 0.25em;
+	padding: 0;
 	font-size: 1em;
+}
+
+#canvasContainer{
+	float: left;
+	width: 84%;
+	height: 95%;
 }
