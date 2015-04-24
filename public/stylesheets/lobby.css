@@ -107,3 +107,7 @@ table {
 	width: 1em;
 	height: 1em;
 }
+
+.row {
+	display: block;
+}

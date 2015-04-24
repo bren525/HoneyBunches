@@ -11,11 +11,11 @@ socket.on('new_user', function(data) {
 	console.log('new', data.colour);
 	if (data.id === socket.id) {
 		//Add user and button to list
-		$("#users").prepend("<li class='name' id="+ data.id +" type='text'><div class='colorChoice' style='margin-right: 1em;background-color: "+ data.colour +"'></div>"+data.nickname+"</li><input class='editName' type='submit' value='Edit' style='margin-left: 1em'>");
+		$("#users").prepend("<div class='row'><div class='colorChoice' style='margin-right: 0.2em;background-color: "+ data.colour +"'></div><li class='name' id="+ data.id +" type='text'>"+data.nickname+"</li><input class='editName' type='submit' value='Edit' style='margin-left: 1em'></div>");
 		socket.name = data.nickname;
 	} else {
 		//Add new user to list
-		$("#users").append("<li id=" + data.id + "><div class='colorChoice' style='background-color: "+ data.colour +"'></div>" + data.nickname + "</li>");
+		$("#users").append("<div class='row'><div class='colorChoice' style='margin-right: 0.2em;background-color: "+ data.colour +"'></div><li id=" + data.id + ">" + data.nickname + "</li></div>");
 	}
 });
 
@@ -27,7 +27,7 @@ socket.on('disconnect', function(msg){
 
 socket.on('color', function(msg) {
 	//Change user's color
-	$('#'+msg.id).children('.colorChoice').css('background-color',msg.colour);
+	$('#'+msg.id).prev().css('background-color',msg.colour);
 })
 
 socket.on('change_user', function(data) {
@@ -65,7 +65,7 @@ $(document).on('click', '.editName', function (){
 	//Switch state from editing name to submit and makes text box
 	console.log("clickedy clacking");
 	var name= $('.name').text();
-	$('.name').replaceWith("<input type='text', class='name', value='" + name +"'></input>");
+	$('.name').replaceWith("<div class='colorChoice' style='background-color:{{this.colour}}'></div><input type='text', class='name', value='" + name +"'></input>");
 	$('.editName').attr('class', 'newName');
 	$('.newName').attr('value', 'Submit');
 })
@@ -75,7 +75,7 @@ $(document).on('click', '.newName', function (e) {
 	var name = $('.name').val();
 	console.log(name);
 	socket.name = name;
-	$('.name').replaceWith("<li class='name'>"+name+"</li>");
+	$('.name').replaceWith("<div class='colorChoice' style='background-color:{{this.colour}}'></div><li class='name'>"+name+"</li>");
 	$('.newName').attr('class', 'editName');
 	$('.editName').attr('value', 'Edit');
 	socket.emit('edit_user', {id: socket.id, nickname: name});

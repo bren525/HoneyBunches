@@ -2,7 +2,7 @@
 <h1 id="title" namespace={{namespace}}> Honey Bunches of {{namespace}}</h1>
 <ul id='users'>
 {{#each users}}
-		<li id={{this.id}}><div class='colorChoice' style="background-color:{{this.colour}}"></div>{{this.nickname}}</li>
+		<div class='row'><div class='colorChoice' style="background-color:{{this.colour}}"></div><li id={{this.id}}>{{this.nickname}}</li></div>
 {{/each}}
 </ul>
 <div id="colorGrid">
