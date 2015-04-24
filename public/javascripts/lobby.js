@@ -65,7 +65,9 @@ $(document).on('click', '.editName', function (){
 	//Switch state from editing name to submit and makes text box
 	console.log("clickedy clacking");
 	var name= $('.name').text();
-	$('.name').replaceWith("<div class='colorChoice' style='background-color:{{this.colour}}'></div><input type='text', class='name', value='" + name +"'></input>");
+	var id = $('.name').attr('id');
+	console.log(id)
+	$('.name').replaceWith("<input type='text', class='name', id='"+ id +"' value='" + name +"'></input>");
 	$('.editName').attr('class', 'newName');
 	$('.newName').attr('value', 'Submit');
 })
@@ -73,9 +75,10 @@ $(document).on('click', '.editName', function (){
 $(document).on('click', '.newName', function (e) {
 	//Submits name change and switches back
 	var name = $('.name').val();
+	var id = $('.name').attr('id');
 	console.log(name);
 	socket.name = name;
-	$('.name').replaceWith("<div class='colorChoice' style='background-color:{{this.colour}}'></div><li class='name'>"+name+"</li>");
+	$('.name').replaceWith("</div><li class='name', id='"+ id +"'>"+name+"</li>");
 	$('.newName').attr('class', 'editName');
 	$('.editName').attr('value', 'Edit');
 	socket.emit('edit_user', {id: socket.id, nickname: name});
