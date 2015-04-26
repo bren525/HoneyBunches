@@ -47,10 +47,20 @@ table {
 	border-spacing: 0;
 }
 
+html { 
+  background: url(../images/trippy.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 #main {
 	max-width: 1024px;
 	margin: 1em auto;
 	font-family: 'Merriweather', serif;
+	background-color: #fff;
+	padding: 2em;
 }
 
 #title {
@@ -106,8 +116,10 @@ table {
 	float: left;
 	width: 1em;
 	height: 1em;
+	margin-right: .5em;
 }
 
 .row {
 	display: block;
+	padding: 0.25em 0;
 }
