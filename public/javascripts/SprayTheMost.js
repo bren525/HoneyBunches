@@ -25,7 +25,13 @@ var currentGame = {
         stage.addChild(txt2);
 
 
-        var timerTicks = 600;
+        var timerTicks = 10;
+        socket.on('timer_message',function(msg){
+            timerTicks = 10 - msg;
+            txt.text = timerTicks.toString();
+            txt2.text = timerTicks.toString();
+
+        });
 
         socket.on('game message', function(msg){
             if(msg.title == "spraythemost" && msg.type == "paint"){
@@ -39,10 +45,7 @@ var currentGame = {
                 stage.setChildIndex(circle,stage.getNumChildren()-3);
             }
 
-            if(msg.title == "spraythemost" && msg.type == "time"){
-                txt.text = msg.val.toString();
-                txt2.text = msg.val.toString();
-            }
+
             if(msg.title == "spraythemost" && msg.type == "state"){
                 state = msg.state;
                 console.log(state);
@@ -65,11 +68,7 @@ var currentGame = {
         function onTick(event){
             stage.update();
             if (socket.host == true) {
-                timerTicks -= 1;
-                if(timerTicks%60 == 0 && state == "running"){
-                    socket.emit("game message",{title:'spraythemost',type:'time',val:(timerTicks/60)});
-                }
-                if(timerTicks == 0){
+                if(timerTicks <= 0){
                     socket.emit("game message",{title:'spraythemost',type:'state',state:'scoring'});
                     state = "game over";
                     if(socket.host){
