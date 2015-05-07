@@ -47,19 +47,30 @@ table {
 	border-spacing: 0;
 }
 
+html { 
+  background: url(../images/trippy.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 #topBar, #sideBar {
 	font-family: 'Merriweather', serif;
 }
 
 #topBar {
-	width: 100%;
-	background-color: #8bb;
+	background-color: #ddd;
+	width: 100vw;
+	height: 3vh;
 	padding: .5em .2em;
+	overflow: hidden;
 }
 
 #topBar li {
 	display: inline-block;
-	font-size: 1em;
+	font-size: 1.5em;
+	font-weight: 400;
 	width: 30%;
 }
 
@@ -69,11 +80,25 @@ table {
 }
 
 #sideBar {
-	width: 200px;
+	width: 15vw;
 	background-color: #a4d;
 }
 
 #sideBar li {
-	padding: 0.25em;
+	padding: .5em, 0.25em;
 	font-size: 1em;
 }
+
+#demoCanvas {
+	background-color: #fff;
+	padding: 0;
+	font-size: 1em;
+}
+
+#canvasContainer{
+	float: left;
+	width: 80vw;
+	height: 90vh;
+	overflow: hidden;
+}
+
