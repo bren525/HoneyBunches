@@ -31,19 +31,21 @@ var currentGame = {
 
         console.log("hi", $('#demoCanvas').width(), $('#demoCanvas').height())
 
+        var w = $('#demoCanvas').width()/3;
+        var h = $('#demoCanvas').height()/6;
+
         var wordtxt = new createjs.Text()
         wordtxt.text = wordScrambled;
         wordtxt.font = "50px Arial";
         wordtxt.color = "#000000";
-        wordtxt.outlilne = 5;
-        wordtxt.x = $('#demoCanvas').width()/3;
-        wordtxt.y = $('#demoCanvas').height()/7;
+        wordtxt.x = w;
+        wordtxt.y = h;
 
         var $guess = new CanvasInput ({
             canvas: document.getElementById('demoCanvas'),
             fontSize: 18,
-            x: $('#demoCanvas').width()/3,
-            y: ($('#demoCanvas').height()/7) *2,
+            x: w,
+            y: h * 2
         });
 
         var background = new createjs.Shape();
@@ -59,8 +61,8 @@ var currentGame = {
 
 		var button = new createjs.Container();
 		button.name = "button";
-		button.x = $('#demoCanvas').width()/3;
-		button.y = ($('#demoCanvas').height()/7) * 3;
+		button.x = w;
+		button.y = h * 3;
 		button.addChild(background, label);
 
 		button.addEventListener("click", handleClick);
@@ -162,14 +164,18 @@ var currentGame = {
         function displayWinners(winners){
             stage.removeAllChildren();
             stage.update();
+            try {
+                $guess.destroy();
+            } catch(err) {
+                console.log("err destroy");
+            }
 
             var wintxt = new createjs.Text();
             wintxt.text = "";
-            wintxt.font = "30px Arial";
+            wintxt.font = "40px Arial";
             wintxt.color = "#000000";
-            wintxt.outline = 5;
-            wintxt.x = $('#demoCanvas').width()/3;
-            wintxt.alpha = 0;
+            wintxt.x = $('#demoCanvas').width()/4;
+            wintxt.y = $('#demoCanvas').height()/3;
 
             if (winners.length == 0){
                 wintxt.text = 'No one solved the scramble';
@@ -181,22 +187,22 @@ var currentGame = {
                     } else {
                         wintxt.text += users[winners[i]].nickname + ", ";
                     }
-                    wintxt.text += " solved the scramble";
                 }
+                wintxt.text += " solved the scramble";
             }
 
 
             stage.addChild(wintxt);
             stage.update();
-            console.log(winners);
-
+            console.log("Win ", winners);
+            
             createjs.Tween.get(wintxt).to({alpha:1},2000).call(function(){
                 stage.autoClear = true; // This must be true to clear the stage.
                 stage.removeAllChildren();
                 stage.update();
 
                 callback(winners);
-            });
+            }); 
         }
 
     }
