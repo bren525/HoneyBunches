@@ -4,7 +4,10 @@ var currentGame = {
 
 		var toRespond = Object.keys(users);
 		var toVote = toRespond;
-		console.log(toVote);
+
+		var winnerScore = 0;
+		var winnerId = undefined;
+
 		// time from spray the most
 		createjs.Ticker.addEventListener("tick", onTick);
 		createjs.Ticker.setFPS(60);
@@ -14,18 +17,18 @@ var currentGame = {
 		txt2.font = "50px Arial";
 		txt2.color = "#ffffff";
 		txt2.outline = false;
-		txt2.x = 15;
+		txt2.x = 10;
 
 		var txt3 = new createjs.Text();
 		txt3.text = "10";
 		txt3.font = "50px Arial";
 		txt3.color = "#000000";
 		txt3.outline = 5;
-		txt3.x = 15;
+		txt3.x = 10;
 
 		timerTicks = 0;
-		time = 25;
-		tickHelp = 25;
+		time = 10;
+		tickHelp = 10;
 		state ="naming"
 
 		stage.addChild(txt3);
@@ -70,13 +73,14 @@ var currentGame = {
 		var responseButtons = new Array();
 
 		function makeButtons(responses) {
+			console.log('making buttons');
 			for (var i = 0; i<responses.length; i++) {
 				var rlabel = new createjs.Text(responses[i].name, "bold 12px Arial", "black");
 				rlabel.name = responses[i].id;
 				rlabel.textAlign = "center";
 				rlabel.textBaseline = "middle";
 				rlabel.lineWidth = 120;
-				rlabel.x = rlabel.getMeasuredWidth()/2 ;
+				rlabel.x = 60 ;
 				rlabel.y = 35/2;
 
 				var rbackground = new createjs.Shape();
@@ -116,24 +120,33 @@ var currentGame = {
 				txt3.text = time;
 				txt2.text = time;
 				stage.update();
-				$name.render()
-				$name.renderCanvas();
+				if(state == "naming"){
+					$name.render();
+					$name.renderCanvas();
+				}
 			}
-			if ((time == 0 || toRespond.length===0 ) && state == "naming") {
-				//createjs.Ticker.off("tick",listener)
-				state = "voting";
+			if ((time === 0 || toRespond.length === 0 ) && state === "naming") {
+				console.log("Voting!");
 				getVoting();
 			}
-			if ((time == 0 || toVote.length===0)  && state == "voting") {
-				state = "game over";
+			if ((time === 0 || toVote.length === 0)  && state === "voting") {
+				console.log('Scoring!');
 				getScore();
+			}
+			if(time === 0 && state === "scoring"){
+				console.log('Its game over man');
+				gameOver();
 			}
 
 		}
 		// end
 
 		function handleClick(e) {
-			stage.removeChild(button);
+			try{
+				stage.removeChild(button);
+			} catch(err){
+				console.log(err);
+			}
 			$name.destroy();
 			stage.update();
 			socket.emit('game message', {title: 'isThisForThat', id: socket.id, name: $name.value()})
@@ -142,9 +155,13 @@ var currentGame = {
 		function voteClick(e) {
 			console.log("yes");
 			console.log(e.target.name);
-			socket.emit('game message', {title: 'isThisForThat', vote: e.target.name, id: socekt.id});
+			socket.emit('game message', {title: 'isThisForThat', vote: e.target.name, id: socket.id});
 			for (var i = 0; i < responseButtons.length; i++) {
-				stage.removeChild(responseButtons[i]);
+				try{
+					stage.removeChild(responseButtons[i]);
+				} catch(err){
+					console.log(err);
+				}
 			}
 			var voteText = new createjs.Text();
 			voteText.text = "You have voted";
@@ -190,29 +207,45 @@ var currentGame = {
 
 		function getVoting() {
 			console.log("Vote: " + responses);
-			stage.removeChild(button);
+			timerTicks = 0;
+			time = 5;
+			tickHelp = 15;
+			toRespond.push("Done");
+			try {
+				$name.destroy();
+				stage.removeChild(button);
+			} catch(err){
+				console.log(err);
+			}
 			header.text = "Vote for the best name";
 			stage.update();
 			makeButtons(responses);
-			timerTicks = 0;
-			time = 15;
-			tickHelp = 15;
-			$name.destroy();
+			state="voting"
 		}
 
 		function getScore() {
 			stage.removeAllChildren();
+			timerTicks = 0;
+			time = 5;
+			tickHelp = 5;
+			state = "scoring";
+			toVote.push("Done");
 			var tally = new createjs.Text("Vote Totals");
 			tally.font = "20px Arial Bold";
-			tally.color = "#000000"
+			tally.color = "#000000";
 			tally.x = 20;
 			tally.lineWidth = 280;
-			stage.addChild(tally);
+			stage.addChild(tally);i
+			console.log(votes);
 			var scores = new Array();
 			for (var i = 0; i < responses.length; i++) {
 				console.log(responses[i].id, votes[responses[i].id]);
 				if (votes[responses[i].id]) {
 					scores.push(new createjs.Text(responses[i].name + ": " + votes[responses[i].id]));
+					if (votes[responses[i].id] > winnerScore){
+						winnerId = responses[i].id
+						winnerScore = votes[responses[i].id]
+					}
 				} else {
 					scores.push(new createjs.Text(responses[i].name + ": 0"));
 				}
@@ -224,11 +257,16 @@ var currentGame = {
 				stage.addChild(scores[i]);
 			}
 			stage.update();
+		}
+
+		function gameOver(){
 			stage.autoClear = true; // This must be true to clear the stage.
 			stage.removeAllChildren();
 			stage.update();
+			state="game over"
 
-			callback();
+			console.log(winnerId);
+			callback([winnerId]);
 		}
 	}
 }

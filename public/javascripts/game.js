@@ -69,7 +69,7 @@ gametime = function(users,socket){
 		$(document).on('game', gameInit(users, socket, stage,  function (scores){
 			console.log('Unloading Game!');
 			stage.enableDOMEvents(false);
-
+			updateScores(scores);
 			width = $canvasContainer.width();
 			height = $canvasContainer.height();
 			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width='"+width+"' height='"+height+"'></canvas>");
