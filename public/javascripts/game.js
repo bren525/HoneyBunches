@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['poeticJustice','SprayTheMost'];
+var games = ['BigButton','SprayTheMost'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
@@ -42,7 +42,10 @@ gametime = function(users,socket){
 			console.log("Game Preloaded!");
 			attachGame(loadedGames[game]);
 		}else{
+			preload.removeAll();
 			preload.loadFile({id:game, src:'../javascripts/'+game+'.js', loadNow:true});
+			console.log("All files loaded?", preload.loaded);
+			console.log("Next file to load", preload.next);
 			console.log('Loading File!');
 		}
 	});
