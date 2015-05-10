@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['SprayTheMost','BigButton'];
+var games = ['isThisForThat'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
@@ -13,8 +13,17 @@ gametime = function(users,socket){
 	$('#user').text($('#'+ socket.id).text());
 	//Loads and starts game logic
 
-	$canvas.attr('width', $canvasContainer.width()); //max width
-	$canvas.attr('height', $canvasContainer.height()); //max height
+	$('#demoCanvas').attr({width:$(window).width()*.85, height:$(window).height()*.9});
+
+	console.log($canvas.attr('width'));
+	console.log($canvas.attr('height'));
+	//Scoring reset
+	$.each(users,function(k,v){
+		v.score = 0;
+	});
+	console.log(users);
+	var scoreMult = 1;
+
 
 	var stage = new createjs.Stage("demoCanvas");
 	var preload = new createjs.LoadQueue();
@@ -35,8 +44,8 @@ gametime = function(users,socket){
 	});
 
 	socket.on('game_ready', function () {
-		$(document).trigger('game');
 		console.log('Game Starting!');
+		$(document).trigger('game');
 	});
 
 	socket.on('game_unloaded', function(){
@@ -60,10 +69,10 @@ gametime = function(users,socket){
 		$(document).on('game', gameInit(users, socket, stage,  function (scores){
 			console.log('Unloading Game!');
 			stage.enableDOMEvents(false);
-
-			var width = $canvasContainer.width();
-			var height = $canvasContainer.height();
-			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width="+width+" height="+height+"></canvas>");
+			updateScores(scores);
+			width = $canvasContainer.width();
+			height = $canvasContainer.height();
+			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width='"+width+"' height='"+height+"'></canvas>");
 			stage = new createjs.Stage("demoCanvas");
 
 			$(document).off('game');
@@ -75,5 +84,14 @@ gametime = function(users,socket){
 		}));
 		socket.emit('game_ready');
 		console.log('Game Ready!');
+	}
+
+	function updateScores(scores){
+		$.each(scores,function(i,v){
+			users[v].score= users[v].score + 1;
+			$('#'+v+' div').text(users[v].score.toString());
+		});
+		console.log('users',users);
+		//update score multiplier
 	}
 };

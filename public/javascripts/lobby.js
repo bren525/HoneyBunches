@@ -63,7 +63,6 @@ $('.colorBlock').click(function(){
 
 $(document).on('click', '.editName', function (){
 	//Switch state from editing name to submit and makes text box
-	console.log("clickedy clacking");
 	var name= $('.name').text();
 	var id = $('.name').attr('id');
 	console.log(id)

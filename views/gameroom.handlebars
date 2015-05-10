@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="../stylesheets/game.css">
 <ul id="topBar">
 	<li id='user'>{{mainuser}}</li>
 	<li>{{namespace}}</li>
@@ -8,17 +9,17 @@
 <ul id='sideBar'>
 {{#each users}}
 	<div class='container'>
-		<li style="background-color: {{this.colour}}" id={{this.id}}>{{this.nickname}} {{this.score}}</li>
+		<li style="background-color: {{this.colour}}" id={{this.id}}>{{this.nickname}} <div> {{this.score}} </div> </li>
 	</div>
 {{/each}}
 </ul>
 
 
 <div id='canvasContainer'>
-	<canvas id="demoCanvas" width="1000" height="600"></canvas>
+	<canvas id="demoCanvas" width="1" height="1"></canvas>
 </div>
 
 <div id="inputs"></div>
 
 <script type="text/javascript" src="../../javascripts/game.js"></script>
-<link rel="stylesheet" type="text/css" href="../stylesheets/game.css">
+<script type="text/javascript" src="../../javascripts/CanvasInput/CanvasInput.min.js"></script>
