@@ -16,13 +16,13 @@ var currentGame = {
 
         button = new createjs.Shape();
         button.graphics.beginFill("red").drawCircle(0, 0, 100);
-        button.x = Math.floor(Math.random() * (stage.canvas.width - 100))+100;
-        button.y = Math.floor(Math.random() * (stage.canvas.height - 100))+100;
+        button.x = Math.floor(Math.random() * (stage.canvas.width - 200))+100;
+        button.y = Math.floor(Math.random() * (stage.canvas.height - 200))+100;
         stage.addChild(button);
         stage.update();
 
 		button.addEventListener("click", function(event) { 
-			socket.emit('game message',{title:'bigbutton', type:'winner', winner:socket.id});
+			socket.emit('game message',{title:'bigbutton', type:'winner', winner:[socket.id]});
 		});
 
         socket.on('game message', function(msg){
@@ -32,7 +32,7 @@ var currentGame = {
             }
             if(msg.title == "bigbutton" && msg.type == "winner"){
                 stage.removeChild(button);
-                displayWinner(msg.winner);
+                displayWinner(msg.winner[0]);
             }
         });
 
@@ -64,7 +64,7 @@ var currentGame = {
                 stage.removeAllChildren();
                 stage.update();
 
-                callback(winner);
+                callback([winner]);
             });
         }
     }
