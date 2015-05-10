@@ -27,9 +27,11 @@ var currentGame = {
 
         var timerTicks = 10;
         socket.on('timer_message',function(msg){
-            timerTicks = 10 - msg;
-            txt.text = timerTicks.toString();
-            txt2.text = timerTicks.toString();
+            if(state == 'running'){
+                timerTicks = 10 - msg;
+                txt.text = timerTicks.toString();
+                txt2.text = timerTicks.toString();
+            }
 
         });
 
@@ -68,7 +70,7 @@ var currentGame = {
         function onTick(event){
             stage.update();
             if (socket.host == true) {
-                if(timerTicks <= 0){
+                if(timerTicks == 0 && state == 'running'){
                     socket.emit("game message",{title:'spraythemost',type:'state',state:'scoring'});
                     state = "game over";
                     if(socket.host){
@@ -110,8 +112,8 @@ var currentGame = {
             }
 
             console.log(max);
-            var winner = {};
-            winner[max.id] = 1;
+            var winner = [max.id];
+            
 
             var wintxt = new createjs.Text();
             wintxt.text = users[max.id].nickname;
@@ -127,7 +129,7 @@ var currentGame = {
             stage.update();
             console.log("winner!",users[max.id].nickname);
 
-            createjs.Tween.get(wintxt).to({alpha:1},5000).call(function(){
+            createjs.Tween.get(wintxt).to({alpha:1},2000).call(function(){
                 stage.autoClear = true; // This must be true to clear the stage.
                 stage.removeAllChildren();
                 stage.update();
@@ -137,13 +139,12 @@ var currentGame = {
         }
 
         function getScore(){
-            console.log(users);
         	var canvas = document.getElementById('demoCanvas');
         	var ctx = canvas.getContext('2d');
         	var image = ctx.getImageData(0,0,canvas.width,canvas.height).data;
 
             $.each(users,function(k,v){
-                v.score = 0;
+                v.paintscore = 0;
             });
         	for(i = 0; i < image.length; i+=4){
         		r = image[i];
@@ -154,16 +155,16 @@ var currentGame = {
                 $.each(users,function(k,v){
                     var userrgb = hexToRgb(v.colour);
                     if(Math.abs(pixelrgb.r - userrgb.r) < 5 && Math.abs(pixelrgb.g - userrgb.g) < 5 && Math.abs(pixelrgb.b - userrgb.b) < 5){
-                        v.score += 1;
+                        v.paintscore += 1;
                     }
                 });
         	}
 
-            var max = {"id":"none","score":-1};
+            var max = {"id":"none","paintscore":-1};
             $.each(users,function(k,v){
 
-                if(v.score>max.score){
-                    max.score = v.score;
+                if(v.paintscore>max.paintscore){
+                    max.paintscore = v.paintscore;
                     max.id = k;
                 }
             });

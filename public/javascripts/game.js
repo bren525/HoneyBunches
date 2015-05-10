@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['SprayTheMost','BigButton', 'isThisForThat'];
+var games = ['isThisForThat'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
@@ -13,19 +13,17 @@ gametime = function(users,socket){
 	$('#user').text($('#'+ socket.id).text());
 	//Loads and starts game logic
 
-	/*
-	var width = $('#canvasContainer').width();
-	console.log('width', $('#canvasContainer').width());
-	console.log('height', $('#canvasContainer').height());
-
-	$canvasContainer.append("<canvas id='demoCanvas' width='"+$('#canvasContainer').width()+"' height='"+$('#canvasContainer').height()+"'/>");
-*/
-
-
 	$('#demoCanvas').attr({width:$(window).width()*.85, height:$(window).height()*.9});
 
 	console.log($canvas.attr('width'));
 	console.log($canvas.attr('height'));
+	//Scoring reset
+	$.each(users,function(k,v){
+		v.score = 0;
+	});
+	console.log(users);
+	var scoreMult = 1;
+
 
 	var stage = new createjs.Stage("demoCanvas");
 	var preload = new createjs.LoadQueue();
@@ -86,5 +84,14 @@ gametime = function(users,socket){
 		}));
 		socket.emit('game_ready');
 		console.log('Game Ready!');
+	}
+
+	function updateScores(scores){
+		$.each(scores,function(i,v){
+			users[v].score= users[v].score + 1;
+			$('#'+v+' div').text(users[v].score.toString());
+		});
+		console.log('users',users);
+		//update score multiplier
 	}
 };
