@@ -35,8 +35,9 @@ var currentGame = {
 		var header = new createjs.Text();
 		header.text = "Name this fictional business:";
 		header.font = "25px Arial Bold";
-		header.color = "#FF00AA"
-		header.x = $('#demoCanvas').width()/2 - header.getMeasuredWidth()/2;
+		header.color = "#FF00AA";
+		header.textAlign = "center";
+		header.x = $('#demoCanvas').width()/2;
 		header.y = $('#demoCanvas').height()/10;
 		header.lineWidth = 400;
 
@@ -119,7 +120,7 @@ var currentGame = {
             }
             else if (state == 'voting'){
             	timerTicks = voteTime - msg;
-            } 
+            }
             else if (state == 'scoring') {
             	timerTicks = scoreTime - msg;
             }
@@ -203,9 +204,10 @@ var currentGame = {
 				} else if (msg.business) {
 					txt = new createjs.Text();
 					txt.text = msg.business;
+					txt.textAlign = "center";
 					txt.font = "20px Arial";
 					txt.color = "#000000";
-					txt.x = header.x ;
+					txt.x = $('#demoCanvas').width()/2;
 					txt.y = header.y+$('#demoCanvas').height()/10;
 					txt.lineWidth = 400;
 					stage.addChild(txt);
