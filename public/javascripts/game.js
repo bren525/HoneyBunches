@@ -1,6 +1,10 @@
 //List of all possible games
+<<<<<<< HEAD
 var games = ['poeticJustice','BigButton','SprayTheMost','MessedUp','OutOfControl'];
 
+=======
+var games = ['poeticJustice'];//,'BigButton','SprayTheMost','MessedUp'];
+>>>>>>> eba1ccbcaeea309bba3bb846a5bc3ef71dec85a1
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')

@@ -34,7 +34,9 @@ app.get("/", gameRoom.getHome);
 app.get("/namespace", gameRoom.getNamespace);
 app.get("/of/:namespace", gameRoom.getLobby);
 app.get("/game", gameRoom.getGame);
+
 app.get("/isthisforthat", apis.isThisForThat);
+app.get("/randomWord", apis.randomWord);
 
 app.post("/of/:namespace", gameRoom.postGameRoom);
 
