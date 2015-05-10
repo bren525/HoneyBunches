@@ -43,34 +43,37 @@ var currentGame = {
 		header.lineWidth = 400;
 
 		stage.addChild(header);
-		var L1X =  $('#demoCanvas').width()/2 - 75-75;
-		var L1Y =  header.y+2.5*$('#demoCanvas').height()/10;
+		var L1X =  $('#demoCanvas').width()/2 - 150-75;
+		var L1Y =  header.y+1.5*$('#demoCanvas').height()/10;
 
 		var $L1 = new CanvasInput ({
 			canvas: document.getElementById('demoCanvas'),
 			fontSize: 18,
 			x: L1X,
 			y: L1Y,
+			width:300,
 		});
 
-		var L2X =  $('#demoCanvas').width()/2 - 75-75;
-		var L2Y =  L1Y+2.5*$('#demoCanvas').height()/20;
+		var L2X =  $('#demoCanvas').width()/2 - 150-75;
+		var L2Y =  L1Y+1.5*$('#demoCanvas').height()/20;
 
 		var $L2 = new CanvasInput ({
 			canvas: document.getElementById('demoCanvas'),
 			fontSize: 18,
 			x: L2X,
 			y: L2Y,
+			width:300,
 		});
 
-		var L3X =  $('#demoCanvas').width()/2 - 75-75;
-		var L3Y =  L2Y+2.5*$('#demoCanvas').height()/20;
+		var L3X =  $('#demoCanvas').width()/2 - 150-75;
+		var L3Y =  L2Y+1.5*$('#demoCanvas').height()/20;
 
 		var $L3 = new CanvasInput ({
 			canvas: document.getElementById('demoCanvas'),
 			fontSize: 18,
 			x: L3X,
 			y: L3Y,
+			width:300,
 		});
 
 		var background = new createjs.Shape();
@@ -86,7 +89,7 @@ var currentGame = {
 
 		var button = new createjs.Container();
 		button.name = "button";
-		button.x = $('#demoCanvas').width()/2 - label.getMeasuredWidth()/2 + 75;
+		button.x = $('#demoCanvas').width()/2 - label.getMeasuredWidth()/2 + 150;
 		button.y = $L2.y();
 		button.addChild(background, label);
 
@@ -95,21 +98,37 @@ var currentGame = {
 		function makeButtons(responses) {
 			console.log('making buttons');
 			for (var i = 0; i<responses.length; i++) {
-				var rlabel = new createjs.Text(responses[i].poem[0]+'/n'+responses[i].poem[1]+'/n'+responses[i].poem[3], "bold 12px Arial", "black");
+				var rlabel = new createjs.Text(responses[i].poem[0], "bold 12px Arial", "black");
 				rlabel.name = responses[i].id;
 				rlabel.textAlign = "center";
 				rlabel.textBaseline = "middle";
-				rlabel.lineWidth = 120;
-				rlabel.x = 60 ;
+				rlabel.lineWidth = 220;
+				rlabel.x = 120;
 				rlabel.y = 35/2;
+
+				var rlabel2 = new createjs.Text(responses[i].poem[1], "bold 12px Arial", "black");
+				rlabel2.name = responses[i].id;
+				rlabel2.textAlign = "center";
+				rlabel2.textBaseline = "middle";
+				rlabel2.lineWidth = 220;
+				rlabel2.x = 120;
+				rlabel2.y = 35;
+
+				var rlabel3 = new createjs.Text(responses[i].poem[2], "bold 12px Arial", "black");
+				rlabel3.name = responses[i].id;
+				rlabel3.textAlign = "center";
+				rlabel3.textBaseline = "middle";
+				rlabel3.lineWidth = 220;
+				rlabel3.x = 120;
+				rlabel3.y = 3*35/2;
 
 				var rbackground = new createjs.Shape();
 				rbackground.name = responses[i].id;
-				rbackground.graphics.beginFill("#00F5FF").drawRoundRect(0, 0, 120, 35, 5);
+				rbackground.graphics.beginFill("#00F5FF").drawRoundRect(0, 0, 240, 70, 5);
 
 				responseButtons.push(new createjs.Container());
 				responseButtons[i].name = responses[i].id;
-				responseButtons[i].addChild(rbackground, rlabel);
+				responseButtons[i].addChild(rbackground, rlabel,rlabel2,rlabel3);
 				responseButtons[i].x = header.x+(i % 4) * ((300 / 4) + 50);
 				responseButtons[i].y = button.y + Math.floor(i / 4) * 50;
 				responseButtons[i].addEventListener("click", voteClick);
@@ -125,9 +144,9 @@ var currentGame = {
 
 		var txt;
 		if (socket.host) {
-			$.get("../isthisforthat")
+			$.get("../randomWord")
 			.done(function(data, status) {
-				socket.emit('game message', {title: 'isThisForThat', business: data});
+				socket.emit('game message', {title: 'poeticJustice', business: data});
 			});
 		}
 
@@ -172,13 +191,13 @@ var currentGame = {
 			$L2.destroy();
 			$L3.destroy();
 			stage.update();
-			socket.emit('game message', {title: 'isThisForThat', id: socket.id, poem: [$L1.value(), $L2.value(), $L3.value()]})
+			socket.emit('game message', {title: 'poeticJustice', id: socket.id, poem: [$L1.value(), $L2.value(), $L3.value()]})
 		}
 
 		function voteClick(e) {
 			console.log("yes");
 			console.log(e.target.name);
-			socket.emit('game message', {title: 'isThisForThat', vote: e.target.name, id: socket.id});
+			socket.emit('game message', {title: 'poeticJustice', vote: e.target.name, id: socket.id});
 			for (var i = 0; i < responseButtons.length; i++) {
 				try{
 					stage.removeChild(responseButtons[i]);
@@ -200,8 +219,9 @@ var currentGame = {
 		var responses = [];
 		var votes = [];
 		socket.on('game message', function(msg) {
-			if (msg.title === "isThisForThat") {
-				if (msg.name) {
+			console.log(msg);
+			if (msg.title === "poeticJustice") {
+				if (msg.poem) {
 					responses.push({id: msg.id, poem: msg.poem});
 					toRespond.splice(toRespond.indexOf(msg.id), 1);
 
@@ -219,8 +239,8 @@ var currentGame = {
 					txt.text = msg.business;
 					txt.font = "20px Arial";
 					txt.color = "#000000";
-					txt.x = header.x ;
-					txt.y = header.y+$('#demoCanvas').height()/10;
+					txt.x = $('#demoCanvas').width()/2 - txt.getMeasuredWidth()/2;
+					txt.y = header.y+.75*$('#demoCanvas').height()/10;
 					txt.lineWidth = 400;
 					stage.addChild(txt);
 					stage.update();
@@ -264,9 +284,9 @@ var currentGame = {
 			console.log(votes);
 			var scores = new Array();
 			for (var i = 0; i < responses.length; i++) {
-				console.log(responses[i].id, votes[responses[i].id]);
+				console.log(users[responses[i].id].nickname);
 				if (votes[responses[i].id]) {
-					scores.push(new createjs.Text(responses[i].name + ": " + votes[responses[i].id]));
+					scores.push(new createjs.Text(users[responses[i].id].nickname + ": " + votes[responses[i].id]));
 					if (votes[responses[i].id] > winnerScore){
 						winnerId = responses[i].id
 						winnerScore = votes[responses[i].id]
