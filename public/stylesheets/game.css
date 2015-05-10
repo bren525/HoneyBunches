@@ -80,16 +80,17 @@ html {
 
 #sideBar {
 	width: 200px;
-	background-color: #a4d;
+	background-color: #aaa;
+	height: 100vh;
 }
 
-#sideBar li {
-	padding: .5em, 0.25em;
+#sideBar .container li {
 	font-size: 1em;
+	padding: 0.5em;
 }
 
 #demoCanvas {
-	/*background-color: #fff;*/
+	background-color: #fff;
 	padding: 0;
 	font-size: 1em;
 }

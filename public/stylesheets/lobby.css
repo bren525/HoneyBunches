@@ -78,6 +78,14 @@ html {
 	font-size: 1em;
 }
 
+#canvasContainer{
+	float: left;
+	width: 85vw;
+	height: 95vh;
+	overflow: hidden;
+
+}
+
 #start-button {
 	width: 100%;
 	font-size: 2em;
