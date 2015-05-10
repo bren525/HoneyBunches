@@ -1,9 +1,5 @@
 //List of all possible games
-<<<<<<< HEAD
 var games = [/*'SprayTheMost','BigButton',*/'OutOfControl'];
-=======
-var games = ['isThisForThat'];
->>>>>>> 5b1c5107eba7450d8f7bdb25ebf7ee230a50fefa
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
