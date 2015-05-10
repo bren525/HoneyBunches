@@ -13,6 +13,13 @@ gametime = function(users,socket){
 	$('#user').text($('#'+ socket.id).text());
 	//Loads and starts game logic
 
+	//Scoring reset
+	$.each(users,function(k,v){
+		v.score = 0;
+	});
+	console.log(users);
+	var scoreMult = 1;
+
 	$canvas.attr('width', $canvasContainer.width()); //max width
 	$canvas.attr('height', $canvasContainer.height()); //max height
 
@@ -61,6 +68,7 @@ gametime = function(users,socket){
 			console.log('Unloading Game!');
 			stage.enableDOMEvents(false);
 
+			updateScores(scores);
 			var width = $canvasContainer.width();
 			var height = $canvasContainer.height();
 			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width="+width+" height="+height+"></canvas>");
@@ -75,5 +83,14 @@ gametime = function(users,socket){
 		}));
 		socket.emit('game_ready');
 		console.log('Game Ready!');
+	}
+
+	function updateScores(scores){
+		$.each(scores,function(i,v){
+			users[v].score= users[v].score + 1;
+			$('#'+v+' div').text(users[v].score.toString());
+		});
+		console.log('users',users);
+		//update score multiplier
 	}
 };
