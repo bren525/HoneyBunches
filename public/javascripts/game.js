@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['isThisForThat'];
+var games = ['WordScramble'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
