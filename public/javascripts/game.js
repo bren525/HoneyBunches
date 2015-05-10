@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['isThisForThat'];
+var games = ['poeticJustice', 'isThisForThat'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
@@ -69,7 +69,6 @@ gametime = function(users,socket){
 		$(document).on('game', gameInit(users, socket, stage,  function (scores){
 			console.log('Unloading Game!');
 			stage.enableDOMEvents(false);
-			updateScores(scores);
 			width = $canvasContainer.width();
 			height = $canvasContainer.height();
 			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width='"+width+"' height='"+height+"'></canvas>");
@@ -81,6 +80,7 @@ gametime = function(users,socket){
 			createjs.Ticker.addEventListener("tick",createjs.Tween);
 			socket.emit('game_unloaded');
 			console.log('Game unloaded!');
+			updateScores(scores);
 		}));
 		socket.emit('game_ready');
 		console.log('Game Ready!');
