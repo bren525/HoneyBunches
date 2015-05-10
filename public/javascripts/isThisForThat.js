@@ -1,33 +1,59 @@
 var currentGame = {
 	init: function (users, socket, stage, callback) {
 		console.log("running isthisforthat...");
+		var state = "naming";
 
 		// time from spray the most
 		createjs.Ticker.addEventListener("tick", onTick);
 		createjs.Ticker.setFPS(60);
 
 		var txt3 = new createjs.Text();
-		txt3.text = "10";
+		txt3.text = "25";
 		txt3.font = "50px Arial";
 		txt3.color = "#000000";
 		txt3.outline = 5;
 		txt3.x = 15;
 
 		var txt2 = new createjs.Text();
-		txt2.text = "10";
+		txt2.text = "25";
 		txt2.font = "50px Arial";
 		txt2.color = "#ffffff";
 		txt2.outline = false;
 		txt2.x = 15;
 
-		timerTicks = 0;
-		time = 25;
-		tickHelp = 25;
-		state ="naming"
+		timerTicks = 25;
+		socket.on('timer_message',function(msg){
+            if(state == 'naming'){
+                timerTicks = 25 - msg;
+                txt3.text = timerTicks.toString();
+                txt2.text = timerTicks.toString();
+            }
+            if(state == 'voting'){
+            	timerTicks = 15 - msg;
+            	txt3.text = timerTicks.toString();
+            	txt2.text = timerTicks.toString();
+            }
+        });
 
 		stage.addChild(txt3);
 		stage.addChild(txt2);
 
+		function onTick(event){
+            stage.update();
+            if (socket.host == true) {
+                if(timerTicks == 0 && state == 'naming'){
+                    state = "voting";
+                    if(socket.host){
+                        getVoting();
+                    }
+                }
+                else if (timerTicks == 0 && state == 'voting'){
+                	state = "game over";
+                	getScore();
+                }
+            }
+        }
+        /*
 		function onTick(event){
 			//console.log(createjs.Ticker.getTime())
 			if(time > 0){
@@ -47,7 +73,7 @@ var currentGame = {
 				getScore();
 			}
 
-		}
+		} */
 		// end
 
 		var header = new createjs.Text();
@@ -187,9 +213,7 @@ var currentGame = {
 			header.text = "Vote for the best name";
 			stage.update();
 			makeButtons(responses);
-			timerTicks = 0;
-			time = 15;
-			tickHelp = 15;
+			timerTicks = 15;
 		}
 
 		function getScore() {

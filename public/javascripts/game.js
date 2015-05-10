@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['SprayTheMost','BigButton'];
+var games = ['isThisForThat'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
