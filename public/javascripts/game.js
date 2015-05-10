@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['SprayTheMost'];
+var games = ['isThisForThat'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
@@ -13,8 +13,19 @@ gametime = function(users,socket){
 	$('#user').text($('#'+ socket.id).text());
 	//Loads and starts game logic
 
-	$canvas.attr('width', $canvasContainer.width()); //max width
-	$canvas.attr('height', $canvasContainer.height()); //max height
+	/*
+	var width = $('#canvasContainer').width();
+	console.log('width', $('#canvasContainer').width());
+	console.log('height', $('#canvasContainer').height());
+
+	$canvasContainer.append("<canvas id='demoCanvas' width='"+$('#canvasContainer').width()+"' height='"+$('#canvasContainer').height()+"'/>");
+*/
+
+
+	$('#demoCanvas').attr({width:$(window).width()*.85, height:$(window).height()*.9});
+
+	console.log($canvas.attr('width'));
+	console.log($canvas.attr('height'));
 
 	var stage = new createjs.Stage("demoCanvas");
 	var preload = new createjs.LoadQueue();
@@ -35,8 +46,8 @@ gametime = function(users,socket){
 	});
 
 	socket.on('game_ready', function () {
-		$(document).trigger('game');
 		console.log('Game Starting!');
+		$(document).trigger('game');
 	});
 
 	socket.on('game_unloaded', function(){
@@ -61,9 +72,9 @@ gametime = function(users,socket){
 			console.log('Unloading Game!');
 			stage.enableDOMEvents(false);
 
-			var width = $canvasContainer.width();
-			var height = $canvasContainer.height();
-			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width="+width+" height="+height+"></canvas>");
+			width = $canvasContainer.width();
+			height = $canvasContainer.height();
+			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width='"+width+"' height='"+height+"'></canvas>");
 			stage = new createjs.Stage("demoCanvas");
 
 			$(document).off('game');

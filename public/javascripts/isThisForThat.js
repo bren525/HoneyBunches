@@ -2,16 +2,12 @@ var currentGame = {
 	init: function (users, socket, stage, callback) {
 		console.log("running isthisforthat...");
 
+		var toRespond = Object.keys(users);
+		var toVote = toRespond;
+		console.log(toVote);
 		// time from spray the most
 		createjs.Ticker.addEventListener("tick", onTick);
 		createjs.Ticker.setFPS(60);
-
-		var txt3 = new createjs.Text();
-		txt3.text = "10";
-		txt3.font = "50px Arial";
-		txt3.color = "#000000";
-		txt3.outline = 5;
-		txt3.x = 15;
 
 		var txt2 = new createjs.Text();
 		txt2.text = "10";
@@ -19,6 +15,13 @@ var currentGame = {
 		txt2.color = "#ffffff";
 		txt2.outline = false;
 		txt2.x = 15;
+
+		var txt3 = new createjs.Text();
+		txt3.text = "10";
+		txt3.font = "50px Arial";
+		txt3.color = "#000000";
+		txt3.outline = 5;
+		txt3.x = 15;
 
 		timerTicks = 0;
 		time = 25;
@@ -28,36 +31,24 @@ var currentGame = {
 		stage.addChild(txt3);
 		stage.addChild(txt2);
 
-		function onTick(event){
-			//console.log(createjs.Ticker.getTime())
-			if(time > 0){
-				timerTicks += 1;
-				time = tickHelp - Math.floor(timerTicks/60);
-				txt3.text = time;
-				txt2.text = time;
-				stage.update();
-			}
-			if (time == 0 && state == "naming"){
-				//createjs.Ticker.off("tick",listener)
-				state = "voting";
-				getVoting();
-			}
-			if (time == 0 && state == "voting"){
-				state = "game over";
-				getScore();
-			}
-
-		}
-		// end
-
 		var header = new createjs.Text();
 		header.text = "Name this fictional business:";
 		header.font = "25px Arial Bold";
 		header.color = "#FF00AA"
-		header.x = 15;
-		header.y = 50;
+		header.x = $('#demoCanvas').width()/2 - header.getMeasuredWidth()/2;
+		header.y = $('#demoCanvas').height()/10;
 		header.lineWidth = 400;
+
 		stage.addChild(header);
+		var nameX =  $('#demoCanvas').width()/2 - 75-75;
+		var nameY =  header.y+2.5*$('#demoCanvas').height()/10;
+
+		var $name = new CanvasInput ({
+			canvas: document.getElementById('demoCanvas'),
+			fontSize: 18,
+			x: nameX,
+			y: nameY,
+		});
 
 		var background = new createjs.Shape();
 		background.name = "background";
@@ -67,16 +58,17 @@ var currentGame = {
 		label.name = "label";
 		label.textAlign = "center";
 		label.textBaseline = "middle";
-		label.x = 120/2;
+		label.x = 60;
 		label.y = 35/2;
 
 		var button = new createjs.Container();
 		button.name = "button";
-		button.x = 50;
-		button.y = 230;
+		button.x = $('#demoCanvas').width()/2 - label.getMeasuredWidth()/2 + 75;
+		button.y = $name.y();
 		button.addChild(background, label);
 
 		var responseButtons = new Array();
+
 		function makeButtons(responses) {
 			for (var i = 0; i<responses.length; i++) {
 				var rlabel = new createjs.Text(responses[i].name, "bold 12px Arial", "black");
@@ -84,7 +76,7 @@ var currentGame = {
 				rlabel.textAlign = "center";
 				rlabel.textBaseline = "middle";
 				rlabel.lineWidth = 120;
-				rlabel.x = 120/2;
+				rlabel.x = rlabel.getMeasuredWidth()/2 ;
 				rlabel.y = 35/2;
 
 				var rbackground = new createjs.Shape();
@@ -94,10 +86,11 @@ var currentGame = {
 				responseButtons.push(new createjs.Container());
 				responseButtons[i].name = responses[i].id;
 				responseButtons[i].addChild(rbackground, rlabel);
-				responseButtons[i].x = (i % 4) * ((300 / 4) + 50);
-				responseButtons[i].y = 140 + Math.floor(i / 4) * 50;
+				responseButtons[i].x = header.x+(i % 4) * ((300 / 4) + 50);
+				responseButtons[i].y = button.y + Math.floor(i / 4) * 50;
 				responseButtons[i].addEventListener("click", voteClick);
 				stage.addChild(responseButtons[i]);
+				console.log('Add button');
 			}
 			stage.update();
 		}
@@ -105,30 +98,6 @@ var currentGame = {
 		stage.addChild(button);
 		stage.update();
 		button.addEventListener("click", handleClick);
-
-		function handleClick(e) {
-			stage.removeChild(button);
-			stage.update();
-			socket.emit('game message', {title: 'isThisForThat', id: socket.id, name: $name.val()})
-		}
-
-		function voteClick(e) {
-			console.log("yes");
-			console.log(e.target.name);
-			socket.emit('game message', {title: 'isThisForThat', vote: e.target.name});
-			for (var i = 0; i < responseButtons.length; i++) {
-				stage.removeChild(responseButtons[i]);
-			}
-			var voteText = new createjs.Text();
-			voteText.text = "You have voted";
-			voteText.font = "25px Arial Bold";
-			voteText.color = "#FF00AA";
-			voteText.x = 15;
-			voteText.y = 180;
-			voteText.lineWidth = 400;
-			stage.addChild(voteText);
-			stage.update();
-		}
 
 		var txt;
 		if (socket.host) {
@@ -138,25 +107,64 @@ var currentGame = {
 			});
 		}
 
-		var $name = $("<input type='text' id='name'>");
-		$("#inputs").append($name);
-		var nameDOM = new createjs.DOMElement($name.attr("id"));
-		stage.addChild(nameDOM);
-
-		var canvasPos = $("#demoCanvas").position();
-		var namePos = $name.position();
-		var namex = canvasPos.left - namePos.left;
-		var namey = canvasPos.top - namePos.top;
-		nameDOM.x = namex + 50;
-		nameDOM.y = namey + 190;
 		stage.update();
+		function onTick(event){
+			//console.log(createjs.Ticker.getTime())
+			if(time > 0){
+				timerTicks += 1;
+				time = tickHelp - Math.floor(timerTicks/60);
+				txt3.text = time;
+				txt2.text = time;
+				stage.update();
+				$name.render()
+				$name.renderCanvas();
+			}
+			if ((time == 0 || toRespond.length===0 ) && state == "naming") {
+				//createjs.Ticker.off("tick",listener)
+				state = "voting";
+				getVoting();
+			}
+			if ((time == 0 || toVote.length===0)  && state == "voting") {
+				state = "game over";
+				getScore();
+			}
+
+		}
+		// end
+
+		function handleClick(e) {
+			stage.removeChild(button);
+			$name.destroy();
+			stage.update();
+			socket.emit('game message', {title: 'isThisForThat', id: socket.id, name: $name.value()})
+		}
+
+		function voteClick(e) {
+			console.log("yes");
+			console.log(e.target.name);
+			socket.emit('game message', {title: 'isThisForThat', vote: e.target.name, id: socekt.id});
+			for (var i = 0; i < responseButtons.length; i++) {
+				stage.removeChild(responseButtons[i]);
+			}
+			var voteText = new createjs.Text();
+			voteText.text = "You have voted";
+			voteText.font = "25px Arial Bold";
+			voteText.color = "#FF00AA";
+			voteText.x = $('#demoCanvas').width()/2 - voteText.getMeasuredWidth()/2;
+			voteText.y = button.y;
+			voteText.lineWidth = 400;
+			stage.addChild(voteText);
+			stage.update();
+		}
 
 		var responses = [];
 		var votes = [];
 		socket.on('game message', function(msg) {
 			if (msg.title === "isThisForThat") {
-				if (msg.id) {
+				if (msg.name) {
 					responses.push({id: msg.id, name: msg.name});
+					toRespond.splice(toRespond.indexOf(msg.id), 1);
+
 					console.log(responses);
 				} else if (msg.vote) {
 					if (votes[msg.vote]) {
@@ -164,14 +172,15 @@ var currentGame = {
 					} else {
 						votes[msg.vote] = 1;
 					}
+					toVote.splice(toVote.indexOf(msg.id), 1);
 					console.log(votes);
 				} else if (msg.business) {
 					txt = new createjs.Text();
 					txt.text = msg.business;
 					txt.font = "20px Arial";
 					txt.color = "#000000";
-					txt.x = 15;
-					txt.y = 90;
+					txt.x = header.x ;
+					txt.y = header.y+$('#demoCanvas').height()/10;
 					txt.lineWidth = 400;
 					stage.addChild(txt);
 					stage.update();
@@ -181,8 +190,6 @@ var currentGame = {
 
 		function getVoting() {
 			console.log("Vote: " + responses);
-			$name.hide();
-			stage.removeChild(nameDOM);
 			stage.removeChild(button);
 			header.text = "Vote for the best name";
 			stage.update();
@@ -190,6 +197,7 @@ var currentGame = {
 			timerTicks = 0;
 			time = 15;
 			tickHelp = 15;
+			$name.destroy();
 		}
 
 		function getScore() {

@@ -80,10 +80,9 @@ var currentGame = {
         }
 
         stage.on('stagemousemove', function(event){
-        	//console.log(event.stageX, event.stageY,socket.id);
-        	if(drawing && state == "running"){
-
-    	    	socket.emit('game message',{title:'spraythemost',type:'paint',id:socket.id,position:{x:event.stageX,y:event.stageY}});
+            //console.log(event.stageX, event.stageY,socket.id);
+            if(drawing && state == "running"){
+                socket.emit('game message',{title:'spraythemost',type:'paint',id:socket.id,position:{x:event.stageX,y:event.stageY}});
     	    }
         });
 
