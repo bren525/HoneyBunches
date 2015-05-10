@@ -117,12 +117,11 @@ var currentGame = {
 
             var wintxt = new createjs.Text();
             wintxt.text = users[max.id].nickname;
-            wintxt.font = "50px Arial";
+            wintxt.font = "40px Arial";
             wintxt.color = "#000000";
-            wintxt.outline = 5;
-            wintxt.x = 200;
-            wintxt.alpha = 0;
-
+            wintxt.textAlign = "center";
+            wintxt.x = $('#demoCanvas').width()/2;
+            wintxt.y = $('#demoCanvas').height()/3;
 
 
             stage.addChild(wintxt);

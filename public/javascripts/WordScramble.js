@@ -1,4 +1,4 @@
-var words = ["scarf", "cloud", "halloween", "pancakes", "waffles", "spaghetti", "notebook", "lollipop", "dolphin", "penguin", "autumn", "shower", "daffodil", "surfing", "sledding", "hiker", "traffic", "element", "science", "magnetic", "jumbo"];
+var words = ["scarf", "cloud", "halloween", "pancakes", "waffles", "spaghetti", "notebook", "lollipop", "dolphin", "penguin", "autumn", "shower", "daffodil", "surfing", "sledding", "hiker", "traffic", "element", "science", "magnetic", "jumbo", "kangaroo", "bootylicious", "windows", "jubalee", "cellular", "nucleus", "whiteboard", "floral", "designate", "parade", "promenade", "toucan", "paradise", "trouble", "Beyonce", "journey", "mirage", "escalate", "esplanade", "palindrome", "daisies", "journey", "terrible", "medallion", "chemistry", "quantum", "germinate", "dessert"];
 var currentGame = {
     init: function (users, socket, stage, callback) {
         console.log("running WordScramble");
@@ -173,8 +173,10 @@ var currentGame = {
             wintxt.text = "";
             wintxt.font = "40px Arial";
             wintxt.color = "#000000";
-            wintxt.x = $('#demoCanvas').width()/4;
+            wintxt.textAlign = "center";
+            wintxt.x = $('#demoCanvas').width()/2;
             wintxt.y = $('#demoCanvas').height()/3;
+
 
             if (winners.length == 0){
                 wintxt.text = 'No one solved the scramble';
