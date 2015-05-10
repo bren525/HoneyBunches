@@ -34,6 +34,7 @@ module.exports = {
           nsp.emit('new_game',msg.game);
         })
         socket.on('game_unloaded', function(msg){
+          clearInterval(nsp.timer);
           nsp.waiting.splice(nsp.waiting.indexOf(socket.id),1);
           console.log('game unloaded:', nsp.waiting);
           if(nsp.waiting.length === 0){
@@ -45,6 +46,11 @@ module.exports = {
           console.log('game ready', nsp.waiting);
           if(nsp.waiting.length === Object.keys(nsp.users).length){
             nsp.emit('game_ready');
+            nsp.timerValue = 0;
+            nsp.timer = setInterval(function(){
+              nsp.emit('timer_message',++nsp.timerValue);
+              console.log(nsp.timerValue);
+            },1000);
           }
         })
         socket.on('game time', function(msg) {
