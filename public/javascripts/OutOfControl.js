@@ -46,8 +46,8 @@ var currentGame = {
         	pos = 0;
         	$.each(users,function(k,v){
 
-        		xperc = .9 * Math.cos((pos/numUsers)*2*Math.PI);
-        		yperc = .9 * Math.sin((pos/numUsers)*2*Math.PI);
+        		xperc = .85 * Math.cos((pos/numUsers)*2*Math.PI);
+        		yperc = .85 * Math.sin((pos/numUsers)*2*Math.PI);
         		socket.emit("game message",{title:'outofcontrol',type:'placePlayer',id:k,x:xperc,y:yperc});
         		pos+=1;
 
@@ -62,16 +62,29 @@ var currentGame = {
         console.log('boardDiam',boardDiameter);
 
         var board = new createjs.Shape();
-        board.graphics.beginFill('#00F').drawCircle(0, 0, Math.round(boardDiameter/2));
+        board.graphics.beginFill('#000').drawCircle(0, 0, Math.round(boardDiameter/2));
         board.x = stage.width/2;
         board.y = stage.height/2;
         stage.addChild(board);
 
-        var target = new createjs.Shape();
-        target.graphics.beginFill('#F00').drawCircle(0, 0, Math.round(boardDiameter*.05));
-        target.x = stage.width/2;
-        target.y = stage.height/2;
-        stage.addChild(target);
+        var target1 = new createjs.Shape();
+        target1.graphics.beginFill('#00F').drawCircle(0, 0, Math.round(boardDiameter*.33));
+        target1.x = stage.width/2;
+        target1.y = stage.height/2;
+        stage.addChild(target1);
+
+        var target2 = new createjs.Shape();
+        target2.graphics.beginFill('#F00').drawCircle(0, 0, Math.round(boardDiameter*.166));
+        target2.x = stage.width/2;
+        target2.y = stage.height/2;
+        stage.addChild(target2);
+
+        var target3 = new createjs.Shape();
+        target3.graphics.beginFill('#FF0').drawCircle(0, 0, Math.round(boardDiameter*.04));
+        target3.x = stage.width/2;
+        target3.y = stage.height/2;
+        stage.addChild(target3);
+
         
 
         var players = {};
