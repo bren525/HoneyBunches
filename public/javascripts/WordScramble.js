@@ -29,8 +29,6 @@ var currentGame = {
         txt2.outline = false;
         txt2.x = 15;
 
-        console.log("hi", $('#demoCanvas').width(), $('#demoCanvas').height())
-
         var w = $('#demoCanvas').width()/3;
         var h = $('#demoCanvas').height()/6;
 
@@ -101,7 +99,6 @@ var currentGame = {
             if (msg.title == 'wordscramble' && msg.type == 'word') {
                 wordUnscrambled = msg.unscrambled;
                 wordScrambled = msg.scrambled;
-                console.log(wordScrambled, wordUnscrambled);
                 wordtxt.text = wordScrambled;
                 stage.update();
             }
@@ -112,6 +109,9 @@ var currentGame = {
             }
             if (msg.title == 'wordscramble' && msg.type == 'state') {
                 state = msg.state;
+                if (msg.state == 'scoring') {
+                    displayWinners(winners);
+                }
             }
         })
 
@@ -122,7 +122,6 @@ var currentGame = {
             if(timerTicks == 0 && state == 'running'){
                 if (socket.host == true) {
                     socket.emit("game message",{title:'wordscramble',type:'state',state:'scoring'});
-                    displayWinners(winners);
                 }
             }
         }
