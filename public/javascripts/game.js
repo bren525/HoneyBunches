@@ -89,9 +89,11 @@ gametime = function(users,socket){
 
 	function updateScores(scores){
 		$.each(scores,function(i,v){
+			console.log(users[v].score);
 			users[v].score= users[v].score + 1;
 			$('#'+v+' div').text(users[v].score.toString());
 		});
+		$('#user').text($('#'+ socket.id).text());
 		console.log('users',users);
 		//update score multiplier
 	}
