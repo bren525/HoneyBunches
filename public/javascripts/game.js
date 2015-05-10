@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['WordScramble'];
+var games = ['poeticJustice','BigButton','SprayTheMost','MessedUp', 'WordScramble'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
@@ -13,7 +13,7 @@ gametime = function(users,socket){
 	$('#user').text($('#'+ socket.id).text());
 	//Loads and starts game logic
 
-	$('#demoCanvas').attr({width:$(window).width()*.85, height:$(window).height()*.9});
+	$('#demoCanvas').attr({width:$(window).width()*.8, height:$(window).height()*.8});
 
 	console.log($canvas.attr('width'));
 	console.log($canvas.attr('height'));
@@ -69,7 +69,6 @@ gametime = function(users,socket){
 		$(document).on('game', gameInit(users, socket, stage,  function (scores){
 			console.log('Unloading Game!');
 			stage.enableDOMEvents(false);
-			updateScores(scores);
 			width = $canvasContainer.width();
 			height = $canvasContainer.height();
 			$("#demoCanvas").replaceWith("<canvas id='demoCanvas' width='"+width+"' height='"+height+"'></canvas>");
@@ -79,8 +78,10 @@ gametime = function(users,socket){
 			createjs.Ticker.removeAllEventListeners();
 			socket.removeListener('game message');
 			createjs.Ticker.addEventListener("tick",createjs.Tween);
+			updateScores(scores);
 			socket.emit('game_unloaded');
 			console.log('Game unloaded!');
+			updateScores(scores);
 		}));
 		socket.emit('game_ready');
 		console.log('Game Ready!');

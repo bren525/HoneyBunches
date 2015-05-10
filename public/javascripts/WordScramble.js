@@ -49,28 +49,28 @@ var currentGame = {
         });
 
         var background = new createjs.Shape();
-		background.name = "background";
-		background.graphics.beginFill("#00F5FF").drawRoundRect(0, 0, 220, 50, 10);
+        background.name = "background";
+        background.graphics.beginFill("#00F5FF").drawRoundRect(0, 0, 220, 50, 10);
 
-		var label = new createjs.Text("Submit My Guess", "bold 20px Arial", "black");
-		label.name = "label";
-		label.textAlign = "center";
-		label.textBaseline = "middle";
-		label.x = 220/2;
-		label.y = 50/2;
+        var label = new createjs.Text("Submit My Guess", "bold 20px Arial", "black");
+        label.name = "label";
+        label.textAlign = "center";
+        label.textBaseline = "middle";
+        label.x = 220/2;
+        label.y = 50/2;
 
-		var button = new createjs.Container();
-		button.name = "button";
-		button.x = w;
-		button.y = h * 3;
-		button.addChild(background, label);
+        var button = new createjs.Container();
+        button.name = "button";
+        button.x = w;
+        button.y = h * 3;
+        button.addChild(background, label);
 
-		button.addEventListener("click", handleClick);
+        button.addEventListener("click", handleClick);
 
-		function handleClick(e) {
-			stage.removeChild(button);
+        function handleClick(e) {
+            stage.removeChild(button);
             $guess.destroy();
-			stage.update();
+            stage.update();
             var correct;
             var val = $guess.value()
             if (val.toLowerCase() === wordUnscrambled) {
