@@ -1,6 +1,6 @@
 var currentGame = {
 	init: function (users, socket, stage, callback) {
-		console.log("running isthisforthat...");
+		console.log("running poeticJustice...");
 
 		var toRespond = Object.keys(users);
 		var toVote = toRespond;
@@ -27,8 +27,8 @@ var currentGame = {
 		txt3.x = 10;
 
 		timerTicks = 0;
-		time = 10;
-		tickHelp = 10;
+		time = 60;
+		tickHelp = 60;
 		state ="naming"
 
 		stage.addChild(txt3);
