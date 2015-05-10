@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['BigButton','SprayTheMost'];
+var games = ['poeticJustice',/*'BigButton',*/'SprayTheMost','OutOfControl'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
@@ -13,7 +13,9 @@ gametime = function(users,socket){
 	$('#user').text($('#'+ socket.id).text());
 	//Loads and starts game logic
 
+
 	$('#demoCanvas').attr({width:$(window).width()*.8, height:$(window).height()*.8});
+
 
 	console.log($canvas.attr('width'));
 	console.log($canvas.attr('height'));
@@ -97,7 +99,6 @@ gametime = function(users,socket){
 			createjs.Ticker.removeAllEventListeners();
 			socket.removeListener('game message');
 			createjs.Ticker.addEventListener("tick",createjs.Tween);
-			updateScores(scores);
 			socket.emit('game_unloaded');
 			console.log('Game unloaded!');
 			updateScores(scores);
