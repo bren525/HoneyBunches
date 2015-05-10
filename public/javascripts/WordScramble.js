@@ -6,9 +6,9 @@ var currentGame = {
         var wordUnscrambled;
         var wordScrambled;
         if (socket.host == true) {
-            var temp = getScrambled(words); 
-            wordUnscrambled = temp[0];
-            wordScrambled = temp[1]; 
+    		var temp = getScrambled(words); 
+    		wordUnscrambled = temp[0];
+    		wordScrambled = temp[1]; 
             socket.emit('game message', {title: 'wordscramble', type: 'word', unscrambled: wordUnscrambled, scrambled: wordScrambled});
         }      
 
@@ -28,8 +28,6 @@ var currentGame = {
         txt2.color = "#ffffff";
         txt2.outline = false;
         txt2.x = 15;
-
-        console.log("hi", $('#demoCanvas').width(), $('#demoCanvas').height())
 
         var w = $('#demoCanvas').width()/3;
         var h = $('#demoCanvas').height()/6;
@@ -79,8 +77,8 @@ var currentGame = {
                 correct = false;
             }
             console.log($guess.value(), wordUnscrambled, correct);
-            socket.emit('game message', {title: 'wordscramble', type: 'guess', id: socket.id, correct: correct})
-        }
+			socket.emit('game message', {title: 'wordscramble', type: 'guess', id: socket.id, correct: correct})
+		}
 
         stage.addChild(txt);
         stage.addChild(txt2);
@@ -101,7 +99,6 @@ var currentGame = {
             if (msg.title == 'wordscramble' && msg.type == 'word') {
                 wordUnscrambled = msg.unscrambled;
                 wordScrambled = msg.scrambled;
-                console.log(wordScrambled, wordUnscrambled);
                 wordtxt.text = wordScrambled;
                 stage.update();
             }
@@ -112,6 +109,9 @@ var currentGame = {
             }
             if (msg.title == 'wordscramble' && msg.type == 'state') {
                 state = msg.state;
+                if (msg.state == 'scoring') {
+                    displayWinners(winners);
+                }
             }
         })
 
@@ -122,44 +122,43 @@ var currentGame = {
             if(timerTicks == 0 && state == 'running'){
                 if (socket.host == true) {
                     socket.emit("game message",{title:'wordscramble',type:'state',state:'scoring'});
-                    displayWinners(winners);
                 }
             }
         }
 
         function getScrambled(words){
-            var myWord = words[getRandomInt(0, words.length)];
-            var scrambled = shuffle(myWord.split(''));
-            var unsplit = "";
-            for (var i = 0; i < scrambled.length; i++) {
-                unsplit = unsplit + scrambled[i];
-            }
-            return [myWord, unsplit]; 
+        	var myWord = words[getRandomInt(0, words.length)];
+        	var scrambled = shuffle(myWord.split(''));
+        	var unsplit = "";
+        	for (var i = 0; i < scrambled.length; i++) {
+        		unsplit = unsplit + scrambled[i];
+        	}
+        	return [myWord, unsplit]; 
         }
 
         // knuth shuffle algorithm found here: http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-        function shuffle(array) {
-            var currentIndex = array.length, temporaryValue, randomIndex ;
+		function shuffle(array) {
+			var currentIndex = array.length, temporaryValue, randomIndex ;
 
-            // While there remain elements to shuffle...
-            while (0 !== currentIndex) {
+			// While there remain elements to shuffle...
+			while (0 !== currentIndex) {
 
-                // Pick a remaining element...
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex -= 1;
+				// Pick a remaining element...
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex -= 1;
 
-                // And swap it with the current element.
-                temporaryValue = array[currentIndex];
-                array[currentIndex] = array[randomIndex];
-                array[randomIndex] = temporaryValue;
-            }
-            return array;
-        }
+				// And swap it with the current element.
+				temporaryValue = array[currentIndex];
+				array[currentIndex] = array[randomIndex];
+				array[randomIndex] = temporaryValue;
+			}
+			return array;
+		}
 
-        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min)) + min;
-        }
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
 
         function displayWinners(winners){
             stage.removeAllChildren();
