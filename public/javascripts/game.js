@@ -13,7 +13,7 @@ gametime = function(users,socket){
 	$('#user').text($('#'+ socket.id).text());
 	//Loads and starts game logic
 
-	$('#demoCanvas').attr({width:$(window).width()*.85, height:$(window).height()*.9});
+	$('#demoCanvas').attr({width:$(window).width()*.8, height:$(window).height()*.9});
 
 	console.log($canvas.attr('width'));
 	console.log($canvas.attr('height'));
