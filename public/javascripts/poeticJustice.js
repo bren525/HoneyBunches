@@ -27,8 +27,8 @@ var currentGame = {
 		txt3.x = 10;
 
 		timerTicks = 0;
-		time = 60;
-		tickHelp = 60;
+		time = 90;
+		tickHelp = 90;
 		state ="naming"
 
 		stage.addChild(txt3);
@@ -251,8 +251,8 @@ var currentGame = {
 		function getVoting() {
 			console.log("Vote: " + responses);
 			timerTicks = 0;
-			time = 5;
-			tickHelp = 15;
+			time = 25;
+			tickHelp = 25;
 			toRespond.push("Done");
 			try {
 				$L1.destroy();
@@ -271,8 +271,8 @@ var currentGame = {
 		function getScore() {
 			stage.removeAllChildren();
 			timerTicks = 0;
-			time = 5;
-			tickHelp = 5;
+			time = 25;
+			tickHelp = 25;
 			state = "scoring";
 			toVote.push("Done");
 			var tally = new createjs.Text("Vote Totals");
