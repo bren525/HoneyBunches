@@ -1,7 +1,6 @@
 var currentGame = {
 	init: function (users, socket, stage, callback) {
-		console.log("running isthisforthat...");
-		var state = "naming";
+		console.log("running poeticJustice...");
 
 		var toRespond = Object.keys(users);
 		var toVote = toRespond;
@@ -14,7 +13,7 @@ var currentGame = {
 		createjs.Ticker.setFPS(60);
 
 		var txt2 = new createjs.Text();
-		txt2.text = "25";
+		txt2.text = "10";
 		txt2.font = "50px Arial";
 		txt2.color = "#ffffff";
 		txt2.outline = false;
@@ -28,15 +27,15 @@ var currentGame = {
 		txt3.x = 10;
 
 		timerTicks = 0;
-		time = 10;
-		tickHelp = 10;
+		time = 60;
+		tickHelp = 60;
 		state ="naming"
 
 		stage.addChild(txt3);
 		stage.addChild(txt2);
 
 		var header = new createjs.Text();
-		header.text = "Name this fictional business:";
+		header.text = "Write the best haiku about:";
 		header.font = "25px Arial Bold";
 		header.color = "#FF00AA"
 		header.x = $('#demoCanvas').width()/2 - header.getMeasuredWidth()/2;
@@ -44,14 +43,34 @@ var currentGame = {
 		header.lineWidth = 400;
 
 		stage.addChild(header);
-		var nameX =  $('#demoCanvas').width()/2 - 75-75;
-		var nameY =  header.y+2.5*$('#demoCanvas').height()/10;
+		var L1X =  $('#demoCanvas').width()/2 - 75-75;
+		var L1Y =  header.y+2.5*$('#demoCanvas').height()/10;
 
-		var $name = new CanvasInput ({
+		var $L1 = new CanvasInput ({
 			canvas: document.getElementById('demoCanvas'),
 			fontSize: 18,
-			x: nameX,
-			y: nameY,
+			x: L1X,
+			y: L1Y,
+		});
+
+		var L2X =  $('#demoCanvas').width()/2 - 75-75;
+		var L2Y =  L1Y+2.5*$('#demoCanvas').height()/20;
+
+		var $L2 = new CanvasInput ({
+			canvas: document.getElementById('demoCanvas'),
+			fontSize: 18,
+			x: L2X,
+			y: L2Y,
+		});
+
+		var L3X =  $('#demoCanvas').width()/2 - 75-75;
+		var L3Y =  L2Y+2.5*$('#demoCanvas').height()/20;
+
+		var $L3 = new CanvasInput ({
+			canvas: document.getElementById('demoCanvas'),
+			fontSize: 18,
+			x: L3X,
+			y: L3Y,
 		});
 
 		var background = new createjs.Shape();
@@ -68,7 +87,7 @@ var currentGame = {
 		var button = new createjs.Container();
 		button.name = "button";
 		button.x = $('#demoCanvas').width()/2 - label.getMeasuredWidth()/2 + 75;
-		button.y = $name.y();
+		button.y = $L2.y();
 		button.addChild(background, label);
 
 		var responseButtons = new Array();
@@ -76,7 +95,7 @@ var currentGame = {
 		function makeButtons(responses) {
 			console.log('making buttons');
 			for (var i = 0; i<responses.length; i++) {
-				var rlabel = new createjs.Text(responses[i].name, "bold 12px Arial", "black");
+				var rlabel = new createjs.Text(responses[i].poem[0]+'/n'+responses[i].poem[1]+'/n'+responses[i].poem[3], "bold 12px Arial", "black");
 				rlabel.name = responses[i].id;
 				rlabel.textAlign = "center";
 				rlabel.textBaseline = "middle";
@@ -122,8 +141,9 @@ var currentGame = {
 				txt2.text = time;
 				stage.update();
 				if(state == "naming"){
-					$name.render();
-					$name.renderCanvas();
+					$L1.render();
+					$L2.render();
+					$L3.render();
 				}
 			}
 			if ((time === 0 || toRespond.length === 0 ) && state === "naming") {
@@ -148,9 +168,11 @@ var currentGame = {
 			} catch(err){
 				console.log(err);
 			}
-			$name.destroy();
+			$L1.destroy();
+			$L2.destroy();
+			$L3.destroy();
 			stage.update();
-			socket.emit('game message', {title: 'isThisForThat', id: socket.id, name: $name.value()})
+			socket.emit('game message', {title: 'isThisForThat', id: socket.id, poem: [$L1.value(), $L2.value(), $L3.value()]})
 		}
 
 		function voteClick(e) {
@@ -180,7 +202,7 @@ var currentGame = {
 		socket.on('game message', function(msg) {
 			if (msg.title === "isThisForThat") {
 				if (msg.name) {
-					responses.push({id: msg.id, name: msg.name});
+					responses.push({id: msg.id, poem: msg.poem});
 					toRespond.splice(toRespond.indexOf(msg.id), 1);
 
 					console.log(responses);
@@ -213,7 +235,9 @@ var currentGame = {
 			tickHelp = 15;
 			toRespond.push("Done");
 			try {
-				$name.destroy();
+				$L1.destroy();
+				$L2.destroy();
+				$L3.destroy();
 				stage.removeChild(button);
 			} catch(err){
 				console.log(err);

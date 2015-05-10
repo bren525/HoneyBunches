@@ -55,14 +55,18 @@ html {
   background-size: cover;
 }
 
+#gamePageContainer {
+	margin: 5vh 5vw;
+}
+
 #topBar, #sideBar {
 	font-family: 'Merriweather', serif;
 }
 
 #topBar {
 	background-color: #ddd;
-	height: 2.5em;
-	padding: .5em .2em;
+	height: 10vh;
+	width: 90vw;
 	overflow: hidden;
 }
 
@@ -70,7 +74,9 @@ html {
 	display: inline-block;
 	font-size: 1.5em;
 	font-weight: 400;
-	width: 30%;
+	width: 33%;
+	text-align: center;
+	margin-top: 3vh;
 }
 
 #sideBar, #demoCanvas {
@@ -79,14 +85,19 @@ html {
 }
 
 #sideBar {
-	width: 200px;
+	width: 10vw;
 	background-color: #aaa;
-	height: 100vh;
+	height: 80vh;
 }
 
 #sideBar .container li {
 	font-size: 1em;
 	padding: 0.5em;
+}
+
+.score {
+	position: relative;
+	float: right;
 }
 
 #demoCanvas {
@@ -98,7 +109,7 @@ html {
 #canvasContainer{
 	float: left;
 	width: 80vw;
-	height: 90vh;
+	height: 80vh;
 	overflow: hidden;
 }
 
