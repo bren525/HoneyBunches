@@ -42,7 +42,7 @@ gametime = function(users,socket){
 			console.log("Game Preloaded!");
 			attachGame(loadedGames[game]);
 		}else{
-			preload.loadFile({id:game, src:'../javascripts/'+game+'.js'});
+			preload.loadFile({id:game, src:'../javascripts/'+game+'.js', loadNow:true});
 			console.log('Loading File!');
 		}
 	});
