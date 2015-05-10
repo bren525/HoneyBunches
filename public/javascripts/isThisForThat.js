@@ -1,6 +1,7 @@
 var currentGame = {
 	init: function (users, socket, stage, callback) {
 		console.log("running isthisforthat...");
+		var state = "naming";
 
 		var toRespond = Object.keys(users);
 		var toVote = toRespond;
@@ -13,7 +14,7 @@ var currentGame = {
 		createjs.Ticker.setFPS(60);
 
 		var txt2 = new createjs.Text();
-		txt2.text = "10";
+		txt2.text = "25";
 		txt2.font = "50px Arial";
 		txt2.color = "#ffffff";
 		txt2.outline = false;
