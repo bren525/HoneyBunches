@@ -104,6 +104,7 @@ var currentGame = {
                 wordUnscrambled = msg.unscrambled;
                 wordScrambled = msg.scrambled;
                 wordtxt.text = wordScrambled;
+                stage.addChild(wordtxt);
                 stage.update();
             }
             if (msg.title == 'wordscramble' && msg.type == 'guess') {     
@@ -124,7 +125,7 @@ var currentGame = {
             stage.update();
             $guess.render();
             $guess.renderCanvas();
-            if((timerTicks == 0 || toRespond.length === 0 ) && state == 'running'){
+            if((timerTicks <= 0 || toRespond.length === 0 ) && state == 'running'){
                 if (socket.host == true) {
                     socket.emit("game message",{title:'wordscramble',type:'state',state:'scoring'});
                 }
