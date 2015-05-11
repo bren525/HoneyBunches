@@ -7,13 +7,14 @@ var currentGame = {
         createjs.Ticker.addEventListener("tick", onTick);
         createjs.Ticker.setFPS(60);
 
+        //timer text
         var txt = new createjs.Text();
         txt.text = "10";
         txt.font = "50px Arial";
         txt.color = "#000000";
         txt.outline = 5;
         txt.x = 15;
-
+        //timer text
         var txt2 = new createjs.Text();
         txt2.text = "10";
         txt2.font = "50px Arial";
@@ -28,6 +29,7 @@ var currentGame = {
         var timerTicks = 10;
         socket.on('timer_message',function(msg){
             if(state == 'running'){
+                //count down
                 timerTicks = 10 - msg;
                 txt.text = timerTicks.toString();
                 txt2.text = timerTicks.toString();
@@ -37,9 +39,8 @@ var currentGame = {
 
         socket.on('game message', function(msg){
             if(msg.title == "spraythemost" && msg.type == "paint"){
-
+                //creates a circle in the color of the corresponding user
                 var circle = new createjs.Shape();
-                //circle.graphics.beginFill('#'+intToARGB(hashCode(msg.id).toString())).drawCircle(0, 0, 20);
                 circle.graphics.beginFill(users[msg.id].colour).drawCircle(0, 0, 20);
                 circle.x = msg.position.x;
                 circle.y = msg.position.y;
@@ -49,6 +50,7 @@ var currentGame = {
 
 
             if(msg.title == "spraythemost" && msg.type == "state"){
+                //handler for state transitions
                 state = msg.state;
                 console.log(state);
                 if(state == 'scoring'){
@@ -69,6 +71,7 @@ var currentGame = {
 
         function onTick(event){
             stage.update();
+            //checks for end of game
             if (socket.host == true) {
                 if(timerTicks == 0 && state == 'running'){
                     socket.emit("game message",{title:'spraythemost',type:'state',state:'scoring'});
@@ -87,15 +90,15 @@ var currentGame = {
     	    }
         });
 
+        //toggles drawing state when mouse is held
         stage.on('stagemousedown',function(event){
-
             drawing = true;
         });
         stage.on('stagemouseup',function(event){
-
         	drawing = false;
         });
 
+        //conversion to help with scoring
         function hexToRgb(hex) {
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
             return result ? {
@@ -145,12 +148,14 @@ var currentGame = {
             $.each(users,function(k,v){
                 v.paintscore = 0;
             });
+            //iterates over pixels to check color of each
         	for(i = 0; i < image.length; i+=4){
         		r = image[i];
         		g = image[i+1];
         		b = image[i+2];
         		a = image[i+3];
                 pixelrgb = {r:r,g:g,b:b,a:a};
+                //awards correct user
                 $.each(users,function(k,v){
                     var userrgb = hexToRgb(v.colour);
                     if(Math.abs(pixelrgb.r - userrgb.r) < 5 && Math.abs(pixelrgb.g - userrgb.g) < 5 && Math.abs(pixelrgb.b - userrgb.b) < 5){
