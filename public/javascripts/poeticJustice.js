@@ -154,7 +154,7 @@ var currentGame = {
             }
             else if (state == 'voting'){
             	timerTicks = 110 - msg;
-            } 
+            }
             else if (state == 'scoring') {
             	timerTicks = 115 - msg;
             }
@@ -257,7 +257,8 @@ var currentGame = {
 
 		function getVoting() {
 			console.log("Vote: " + responses);
-			timerTicks = 20;
+			time = 25;
+			tickHelp = 25;
 			toRespond.push("Done");
 			try {
 				$L1.destroy();
@@ -275,7 +276,6 @@ var currentGame = {
 
 		function getScore() {
 			stage.removeAllChildren();
-			timerTicks = 5;
 			state = "scoring";
 			toVote.push("Done");
 			var tally = new createjs.Text("Vote Totals");
