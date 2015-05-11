@@ -1,4 +1,4 @@
-var words = ["scarf", "cloud", "halloween", "pancakes", "waffles", "spaghetti", "notebook", "lollipop", "dolphin", "penguin", "autumn", "shower", "daffodil", "surfing", "sledding", "hiker", "traffic", "element", "science", "magnetic", "jumbo"];
+var words = ["scarf", "cloud", "halloween", "pancakes", "waffles", "spaghetti", "notebook", "lollipop", "dolphin", "penguin", "autumn", "shower", "daffodil", "surfing", "sledding", "hiker", "traffic", "element", "science", "magnetic", "jumbo", "kangaroo", "bootylicious", "windows", "jubalee", "cellular", "nucleus", "whiteboard", "floral", "designate", "parade", "promenade", "toucan", "paradise", "trouble", "Beyonce", "journey", "mirage", "escalate", "esplanade", "palindrome", "daisies", "journey", "terrible", "medallion", "chemistry", "quantum", "germinate", "dessert"];
 var currentGame = {
     init: function (users, socket, stage, callback) {
         console.log("running WordScramble");
