@@ -81,6 +81,7 @@ var currentGame = {
             }
         });
 
+        //win animation
         function displayWinner(winner){
 
             if(winner == "none"){
@@ -97,8 +98,6 @@ var currentGame = {
             wintxt.textAlign = "center";
             wintxt.x = $('#demoCanvas').width()/2;
             wintxt.y = $('#demoCanvas').height()/3;
-
-
 
             stage.addChild(wintxt);
             stage.update();

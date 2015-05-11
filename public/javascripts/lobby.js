@@ -60,9 +60,6 @@ $(document).on('click','.colorBlock', function() {
 	//color block choice
 	var choice = $(this).attr('id');
 	console.log(choice);
-	// if ($(this).hasClass('disableColor')) {
-	// 	console.log("disabled");
-	// }
 	socket.emit('color', {id: $('.name').attr('id'), colour:choice});
 });
 
