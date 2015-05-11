@@ -159,7 +159,6 @@ var currentGame = {
 		var randAngle = Math.random()*.5*Math.PI;
 		
         this.document.onkeydown = function(event){
-        	console.log(event.keycode)
         	switch(event.keyCode) {
 				case LEFT:	
 					vel = {x:Math.cos(directions[0]+randAngle),y:Math.sin(directions[0]+randAngle)};
