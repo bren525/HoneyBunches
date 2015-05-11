@@ -24,14 +24,16 @@ var currentGame = {
         createjs.Ticker.setFPS(60);
 
 
-        var timerTicks = 10;
+        var timerTicks = 15;
         socket.on('timer_message',function(msg){
             if(state == 'running'){
-                timerTicks = 10 - msg;
+                timerTicks = 15 - msg;
                 txt.text = timerTicks.toString();
                 txt2.text = timerTicks.toString();
-                if(socket.host && timerTicks = 0){
-                	displayWinner(null,"Yall Failed");
+                if(socket.host && timerTicks == 0){
+
+                	state = 'scoring';
+                	socket.emit('game message',{title:'outofcontrol',type:'winner',id:null});
 
                 }
             }
@@ -107,7 +109,11 @@ var currentGame = {
 
         	if(msg.title == "outofcontrol" && msg.type == "winner"){
         		state = 'scoring';
-        		displayWinner(msg.id,users[msg.id].nickname);
+        		if(msg.id){
+        			displayWinner(msg.id,users[msg.id].nickname);
+        		}else{
+        			displayWinner(null, "Failure")
+        		}
 
         	}
 
