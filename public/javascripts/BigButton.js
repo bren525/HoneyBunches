@@ -30,9 +30,10 @@ var currentGame = {
                 state = msg.state;
                 console.log(state);
             }
-            if(msg.title == "bigbutton" && msg.type == "winner"){
+            if(msg.title == "bigbutton" && msg.type == "winner" && state = 'running'){
                 stage.removeChild(button);
                 displayWinner(msg.winner[0]);
+                state = 'scoring';
             }
         });
 
