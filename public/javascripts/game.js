@@ -1,6 +1,6 @@
 //List of all possible games
 
-var games = ['OutOfControl'];
+var games = ['OutOfControl','SprayTheMost','BigButton','isThisForThat','FastTyper','isThisForThat','WordScramble'];
 
 
 

@@ -12,9 +12,7 @@ var currentGame = {
 
         function onTick(event){
             stage.update();
-            if (allValuesSame(tracker[socket.id])) {
-                socket.emit('game message',{title:'fasttyper',type:'winner',winner:[socket.id]});
-            }
+            
         }
 
         var alph = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -55,6 +53,9 @@ var currentGame = {
                 socket.emit('game message',{title:'fasttyper',type:'typing',user:socket.id,keyCode:keyCode});
                 access[keyCode] = 0;
                 tracker[socket.id] = access;
+            }
+            if (allValuesSame(tracker[socket.id])) {
+                socket.emit('game message',{title:'fasttyper',type:'winner',winner:[socket.id]});
             }  
         });
 
@@ -66,8 +67,9 @@ var currentGame = {
                 state = msg.state;
                 console.log(state);
             }
-            if(msg.title == "fasttyper" && msg.type == "winner"){
+            if(msg.title == "fasttyper" && msg.type == "winner" && state == 'running'){
                 displayWinner(msg.winner[0]);
+                state = 'scoring';
             }
         });
 
@@ -82,11 +84,11 @@ var currentGame = {
 
             var wintxt = new createjs.Text();
             wintxt.text = users[winner].nickname;
-            wintxt.font = "50px Arial";
+            wintxt.font = "40px Arial";
             wintxt.color = "#000000";
-            wintxt.outline = 5;
-            wintxt.x = 200;
-            wintxt.alpha = 0;
+            wintxt.textAlign = "center";
+            wintxt.x = $('#demoCanvas').width()/2;
+            wintxt.y = $('#demoCanvas').height()/3;
 
 
 
