@@ -116,6 +116,7 @@ var currentGame = {
                 state = msg.state;
                 if (msg.state == 'scoring') {
                     displayWinners(winners);
+                    state = 'game over';
                 }
             }
         })
