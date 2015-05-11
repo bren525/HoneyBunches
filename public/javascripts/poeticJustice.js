@@ -13,22 +13,19 @@ var currentGame = {
 		createjs.Ticker.setFPS(60);
 
 		var txt2 = new createjs.Text();
-		txt2.text = "10";
+		txt2.text = "90";
 		txt2.font = "50px Arial";
 		txt2.color = "#ffffff";
 		txt2.outline = false;
 		txt2.x = 10;
 
 		var txt3 = new createjs.Text();
-		txt3.text = "10";
+		txt3.text = "90";
 		txt3.font = "50px Arial";
 		txt3.color = "#000000";
 		txt3.outline = 5;
 		txt3.x = 10;
 
-		timerTicks = 0;
-		time = 60;
-		tickHelp = 60;
 		state ="naming"
 
 		stage.addChild(txt3);
@@ -80,7 +77,7 @@ var currentGame = {
 		background.name = "background";
 		background.graphics.beginFill("#00F5FF").drawRoundRect(0, 0, 120, 35, 5);
 
-		var label = new createjs.Text("Submit Name", "bold 12px Arial", "black");
+		var label = new createjs.Text("Submit Haiku", "bold 12px Arial", "black");
 		label.name = "label";
 		label.textAlign = "center";
 		label.textBaseline = "middle";
@@ -150,30 +147,40 @@ var currentGame = {
 			});
 		}
 
+		var timerTicks = 90;
+        socket.on('timer_message',function(msg){
+            if(state == 'naming'){
+                timerTicks = 90 - msg;
+            }
+            else if (state == 'voting'){
+            	timerTicks = 110 - msg;
+            } 
+            else if (state == 'scoring') {
+            	timerTicks = 115 - msg;
+            }
+			txt3.text = timerTicks.toString();
+			txt2.text = timerTicks.toString();
+			console.log(state, timerTicks);
+        });
+
 		stage.update();
 		function onTick(event){
 			//console.log(createjs.Ticker.getTime())
-			if(time > 0){
-				timerTicks += 1;
-				time = tickHelp - Math.floor(timerTicks/60);
-				txt3.text = time;
-				txt2.text = time;
-				stage.update();
-				if(state == "naming"){
-					$L1.render();
-					$L2.render();
-					$L3.render();
-				}
+			stage.update();
+			if(state == "naming"){
+				$L1.render();
+				$L2.render();
+				$L3.render();
 			}
-			if ((time === 0 || toRespond.length === 0 ) && state === "naming") {
+			if ((timerTicks === 0 || toRespond.length === 0 ) && state === "naming") {
 				console.log("Voting!");
 				getVoting();
 			}
-			if ((time === 0 || toVote.length === 0)  && state === "voting") {
+			if ((timerTicks === 0 || toVote.length === 0)  && state === "voting") {
 				console.log('Scoring!');
 				getScore();
 			}
-			if(time === 0 && state === "scoring"){
+			if(timerTicks === 0 && state === "scoring"){
 				console.log('Its game over man');
 				gameOver();
 			}
@@ -250,9 +257,7 @@ var currentGame = {
 
 		function getVoting() {
 			console.log("Vote: " + responses);
-			timerTicks = 0;
-			time = 5;
-			tickHelp = 15;
+			timerTicks = 20;
 			toRespond.push("Done");
 			try {
 				$L1.destroy();
@@ -262,7 +267,7 @@ var currentGame = {
 			} catch(err){
 				console.log(err);
 			}
-			header.text = "Vote for the best name";
+			header.text = "Vote for the best haiku";
 			stage.update();
 			makeButtons(responses);
 			state="voting"
@@ -270,9 +275,7 @@ var currentGame = {
 
 		function getScore() {
 			stage.removeAllChildren();
-			timerTicks = 0;
-			time = 5;
-			tickHelp = 5;
+			timerTicks = 5;
 			state = "scoring";
 			toVote.push("Done");
 			var tally = new createjs.Text("Vote Totals");
