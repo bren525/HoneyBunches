@@ -113,8 +113,7 @@ var currentGame = {
                 }
             }
             if (msg.title == 'wordscramble' && msg.type == 'state') {
-                state = msg.state;
-                if (msg.state == 'scoring') {
+                if (state == 'scoring') {
                     displayWinners(winners);
                     state = 'game over';
                 }
