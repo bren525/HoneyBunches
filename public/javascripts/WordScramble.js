@@ -173,8 +173,10 @@ var currentGame = {
             wintxt.text = "";
             wintxt.font = "40px Arial";
             wintxt.color = "#000000";
-            wintxt.x = $('#demoCanvas').width()/4;
+            wintxt.textAlign = "center";
+            wintxt.x = $('#demoCanvas').width()/2;
             wintxt.y = $('#demoCanvas').height()/3;
+
 
             if (winners.length == 0){
                 wintxt.text = 'No one solved the scramble';
