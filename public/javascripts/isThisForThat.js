@@ -4,7 +4,7 @@ var currentGame = {
 		var state = "naming";
 
 		var toRespond = Object.keys(users);
-		var toVote = toRespond;
+		var toVote = Object.keys(users);
 
 		var winnerScore = 0;
 		var winnerId = undefined;
@@ -187,6 +187,7 @@ var currentGame = {
 		var votes = [];
 		socket.on('game message', function(msg) {
 			if (msg.title === "isThisForThat") {
+				console.log('MSG', msg);
 				if (msg.name) {
 					responses.push({id: msg.id, name: msg.name});
 					toRespond.splice(toRespond.indexOf(msg.id), 1);
