@@ -36,13 +36,6 @@ var currentGame = {
         var w = $('#demoCanvas').width()/3;
         var h = $('#demoCanvas').height()/6;
 
-        var wordtxt = new createjs.Text()
-        wordtxt.text = wordScrambled;
-        wordtxt.font = "50px Arial";
-        wordtxt.color = "#000000";
-        wordtxt.x = w;
-        wordtxt.y = h;
-
         var $guess = new CanvasInput ({
             canvas: document.getElementById('demoCanvas'),
             fontSize: 18,
@@ -103,7 +96,13 @@ var currentGame = {
             if (msg.title == 'wordscramble' && msg.type == 'word') {
                 wordUnscrambled = msg.unscrambled;
                 wordScrambled = msg.scrambled;
+                var wordtxt = new createjs.Text()
                 wordtxt.text = wordScrambled;
+                wordtxt.font = "50px Arial";
+                wordtxt.color = "#000000";
+                wordtxt.x = w;
+                wordtxt.y = h;
+                stage.addChild(wordtxt);
                 stage.update();
             }
             if (msg.title == 'wordscramble' && msg.type == 'guess') {     
@@ -113,8 +112,7 @@ var currentGame = {
                 }
             }
             if (msg.title == 'wordscramble' && msg.type == 'state') {
-                state = msg.state;
-                if (msg.state == 'scoring') {
+                if (state == 'scoring') {
                     displayWinners(winners);
                     state = 'game over';
                 }
@@ -125,7 +123,7 @@ var currentGame = {
             stage.update();
             $guess.render();
             $guess.renderCanvas();
-            if((timerTicks == 0 || toRespond.length === 0 ) && state == 'running'){
+            if((timerTicks <= 0 || toRespond.length === 0 ) && state == 'running'){
                 if (socket.host == true) {
                     socket.emit("game message",{title:'wordscramble',type:'state',state:'scoring'});
                 }

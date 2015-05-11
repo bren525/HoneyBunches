@@ -136,15 +136,15 @@ var currentGame = {
 				$name.render();
 				$name.renderCanvas();
 			}
-            if ((timerTicks === 0 || toRespond.length === 0 ) && state === "naming") {
+            if ((timerTicks <= 0 || toRespond.length === 0 ) && state === "naming") {
 				console.log("Voting!");
 				getVoting();
 			}
-			if ((timerTicks === 0 || toVote.length === 0)  && state === "voting") {
+			if ((timerTicks <= 0 || toVote.length === 0)  && state === "voting") {
 				console.log('Scoring!');
 				getScore();
 			}
-			if (timerTicks === 0 && state === "scoring"){
+			if (timerTicks <= 0 && state === "scoring"){
 				console.log('Its game over man');
 				gameOver();
 			}

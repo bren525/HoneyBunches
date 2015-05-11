@@ -33,10 +33,13 @@ var currentGame = {
                 state = msg.state;
                 console.log(state);
             }
+
             //recieves win message and removes button so no one else can click
-            if(msg.title == "bigbutton" && msg.type == "winner"){
+            if(msg.title == "bigbutton" && msg.type == "winner" && state == 'running'){
+
                 stage.removeChild(button);
                 displayWinner(msg.winner[0]);
+                state = 'scoring';
             }
         });
 
