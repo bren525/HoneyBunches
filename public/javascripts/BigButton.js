@@ -14,6 +14,7 @@ var currentGame = {
             stage.update();
         }
 
+        //generates randomly positioned button
         button = new createjs.Shape();
         button.graphics.beginFill("red").drawCircle(0, 0, 100);
         button.x = Math.floor(Math.random() * (stage.canvas.width - 200))+100;
@@ -21,21 +22,25 @@ var currentGame = {
         stage.addChild(button);
         stage.update();
 
+        //Listens for first person to click
 		button.addEventListener("click", function(event) { 
 			socket.emit('game message',{title:'bigbutton', type:'winner', winner:[socket.id]});
 		});
 
+        //handles recieved messages
         socket.on('game message', function(msg){
             if(msg.title == "bigbutton" && msg.type == "state"){
                 state = msg.state;
                 console.log(state);
             }
+            //recieves win message and removes button so no one else can click
             if(msg.title == "bigbutton" && msg.type == "winner"){
                 stage.removeChild(button);
                 displayWinner(msg.winner[0]);
             }
         });
 
+        //Displays name of winner to each player
         function displayWinner(winner){
 
             if(winner == "none"){
@@ -52,8 +57,6 @@ var currentGame = {
             wintxt.textAlign = "center";
             wintxt.x = $('#demoCanvas').width()/2;
             wintxt.y = $('#demoCanvas').height()/3;
-
-
 
 
             stage.addChild(wintxt);
