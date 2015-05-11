@@ -9,10 +9,10 @@ var currentGame = {
 		var winnerScore = 0;
 		var winnerId = undefined;
 
-		// time from spray the most
 		createjs.Ticker.addEventListener("tick", onTick);
 		createjs.Ticker.setFPS(60);
 
+		// timer text
 		var txt2 = new createjs.Text();
 		txt2.text = "15";
 		txt2.font = "50px Arial";
@@ -27,11 +27,10 @@ var currentGame = {
 		txt3.outline = 5;
 		txt3.x = 10;
 
-		state ="naming"
-
 		stage.addChild(txt3);
 		stage.addChild(txt2);
 
+		// Game instructions header text 
 		var header = new createjs.Text();
 		header.text = "Name this fictional business:";
 		header.font = "25px Arial Bold";
@@ -45,6 +44,7 @@ var currentGame = {
 		var nameX =  $('#demoCanvas').width()/2 - 75-75;
 		var nameY =  header.y+2.5*$('#demoCanvas').height()/10;
 
+		// Canvas text input for naming
 		var $name = new CanvasInput ({
 			canvas: document.getElementById('demoCanvas'),
 			fontSize: 18,
@@ -52,6 +52,7 @@ var currentGame = {
 			y: nameY,
 		});
 
+		// background label and button all create button
 		var background = new createjs.Shape();
 		background.name = "background";
 		background.graphics.beginFill("#00F5FF").drawRoundRect(0, 0, 120, 35, 5);
@@ -136,15 +137,15 @@ var currentGame = {
 				$name.render();
 				$name.renderCanvas();
 			}
-            if ((timerTicks <= 0 || toRespond.length === 0 ) && state === "naming") {
+            if ((timerTicks <= 1 || toRespond.length === 0 ) && state === "naming") {
 				console.log("Voting!");
 				getVoting();
 			}
-			if ((timerTicks <= 0 || toVote.length === 0)  && state === "voting") {
+			if ((timerTicks <= 1 || toVote.length === 0)  && state === "voting") {
 				console.log('Scoring!');
 				getScore();
 			}
-			if (timerTicks <= 0 && state === "scoring"){
+			if (timerTicks <= 1 && state === "scoring"){
 				console.log('Its game over man');
 				gameOver();
 			}

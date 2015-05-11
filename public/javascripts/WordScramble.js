@@ -95,7 +95,7 @@ var currentGame = {
             if (msg.title == 'wordscramble' && msg.type == 'word') {
                 wordUnscrambled = msg.unscrambled;
                 wordScrambled = msg.scrambled;
-                var wordtxt = new createjs.Text()
+                var wordtxt = new createjs.Text();
                 wordtxt.text = wordScrambled;
                 wordtxt.font = "50px Arial";
                 wordtxt.color = "#000000";
