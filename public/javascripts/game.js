@@ -1,5 +1,5 @@
 //List of all possible games
-var games = ['BigButton','SprayTheMost','MessedUp'];
+var games = ['FastTyper'];
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
