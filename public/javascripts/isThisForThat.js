@@ -111,13 +111,13 @@ var currentGame = {
 			});
 		}
 
-		var timerTicks = 15;
+		var timerTicks = 25;
 		var msgTime;
 		var voteTime;
 		var scoreTime;
         socket.on('timer_message',function(msg){
             if(state == 'naming'){
-                timerTicks = 15 - msg;
+                timerTicks = 25 - msg;
             }
             else if (state == 'voting'){
             	timerTicks = voteTime - msg;
