@@ -79,7 +79,6 @@ var currentGame = {
 
         stage.addChild(txt);
         stage.addChild(txt2);
-        stage.addChild(wordtxt);
         stage.addChild(button);
 
         var timerTicks = 15;
