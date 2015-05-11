@@ -13,7 +13,7 @@ module.exports = {
         //What to do after getting the nickname
         socket.nickname = animal;
 
-        socket.colour = '#000000';
+        socket.colour = getColour();
 
         //Add user to users object
 
@@ -96,4 +96,16 @@ function getNickname (done) {
   })
 }
 
+var colors = ['#f76d3c','#f7d842','#f15f74', '#5481e6','#913ccd','#839098','#98cb4a','#2ca8c2'];
+function getColour () {
+  var i = getRandomInt(0, colors.length);
+  var color = colors[i];
+  colors.splice(i,1);
+  return color;
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
