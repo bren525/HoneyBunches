@@ -91,6 +91,7 @@ var currentGame = {
         });
 
         var winners = [];
+        var end = false;
         socket.on('game message', function(msg) {
             if (msg.title == 'wordscramble' && msg.type == 'word') {
                 wordUnscrambled = msg.unscrambled;
@@ -111,9 +112,9 @@ var currentGame = {
                 }
             }
             if (msg.title == 'wordscramble' && msg.type == 'state') {
-                if (state == 'scoring') {
+                if (msg.state == 'scoring' && end == false) {
                     displayWinners(winners);
-                    state = 'game over';
+                    end = true;
                 }
             }
         })

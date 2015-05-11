@@ -52,7 +52,7 @@ var currentGame = {
 			y: nameY,
 		});
 
-		// background label and button all create button
+		// background, label, and button all form a button for submission
 		var background = new createjs.Shape();
 		background.name = "background";
 		background.graphics.beginFill("#00F5FF").drawRoundRect(0, 0, 120, 35, 5);
@@ -72,6 +72,7 @@ var currentGame = {
 
 		var responseButtons = new Array();
 
+		// Buttons to vote for responses
 		function makeButtons(responses) {
 			console.log('making buttons');
 			for (var i = 0; i<responses.length; i++) {
@@ -103,6 +104,7 @@ var currentGame = {
 		stage.update();
 		button.addEventListener("click", handleClick);
 
+		// retrieves the is this for that api item
 		var txt;
 		if (socket.host) {
 			$.get("../isthisforthat")
@@ -111,6 +113,7 @@ var currentGame = {
 			});
 		}
 
+		// syncs timing with the server
 		var timerTicks = 25;
 		var msgTime;
 		var voteTime;
