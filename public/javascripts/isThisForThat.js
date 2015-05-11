@@ -110,19 +110,23 @@ var currentGame = {
 		}
 
 		var timerTicks = 15;
+		var msgTime;
+		var voteTime;
+		var scoreTime;
         socket.on('timer_message',function(msg){
             if(state == 'naming'){
                 timerTicks = 15 - msg;
             }
             else if (state == 'voting'){
-            	timerTicks = 25 - msg;
+            	timerTicks = voteTime - msg;
             } 
             else if (state == 'scoring') {
-            	timerTicks = 30 - msg;
+            	timerTicks = scoreTime - msg;
             }
 			txt3.text = timerTicks.toString();
 			txt2.text = timerTicks.toString();
 			console.log(state, timerTicks);
+			msgTime = msg;
         });
 
 		function onTick(event){
@@ -212,7 +216,8 @@ var currentGame = {
 
 		function getVoting() {
 			console.log("Vote: " + responses);
-			timerTicks = 10;
+			voteTime = msgTime + 10;
+
 			toRespond.push("Done");
 			try {
 				$name.destroy();
@@ -228,7 +233,7 @@ var currentGame = {
 
 		function getScore() {
 			stage.removeAllChildren();
-			timerTicks = 5;
+			scoreTime = msgTime + 5;
 			state = "scoring";
 			toVote.push("Done");
 			var tally = new createjs.Text("Vote Totals");
