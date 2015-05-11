@@ -101,6 +101,7 @@ html {
 	position: relative;
 	float: right;
 	padding-right: 0.2em;
+	margin-top: -16px;
 }
 
 #demoCanvas {

@@ -1,7 +1,5 @@
 //List of all possible games
-
-var games = ['OutOfControl','SprayTheMost','BigButton','isThisForThat','FastTyper','isThisForThat','WordScramble'];
-
+var games = ['FastTyper', 'WordScramble', 'poeticJustice', 'BigButton', 'SprayTheMost','OutOfControl', 'isThisForThat'];
 
 
 var $canvas = $('#demoCanvas');

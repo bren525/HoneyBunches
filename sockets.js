@@ -79,6 +79,9 @@ module.exports = {
           }
 
           delete nsp.users[socket.id];
+          if(Object.keys(nsp.users).length === 0){
+            delete nsp
+          }
         });
       });
     });

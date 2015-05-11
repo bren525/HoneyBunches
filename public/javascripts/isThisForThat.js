@@ -4,7 +4,7 @@ var currentGame = {
 		var state = "naming";
 
 		var toRespond = Object.keys(users);
-		var toVote = toRespond;
+		var toVote = Object.keys(users);
 
 		var winnerScore = 0;
 		var winnerId = undefined;
@@ -35,8 +35,9 @@ var currentGame = {
 		var header = new createjs.Text();
 		header.text = "Name this fictional business:";
 		header.font = "25px Arial Bold";
-		header.color = "#FF00AA"
-		header.x = $('#demoCanvas').width()/2 - header.getMeasuredWidth()/2;
+		header.color = "#FF00AA";
+		header.textAlign = "center";
+		header.x = $('#demoCanvas').width()/2;
 		header.y = $('#demoCanvas').height()/10;
 		header.lineWidth = 400;
 
@@ -119,7 +120,7 @@ var currentGame = {
             }
             else if (state == 'voting'){
             	timerTicks = voteTime - msg;
-            } 
+            }
             else if (state == 'scoring') {
             	timerTicks = scoreTime - msg;
             }
@@ -187,6 +188,7 @@ var currentGame = {
 		var votes = [];
 		socket.on('game message', function(msg) {
 			if (msg.title === "isThisForThat") {
+				console.log('MSG', msg);
 				if (msg.name) {
 					responses.push({id: msg.id, name: msg.name});
 					toRespond.splice(toRespond.indexOf(msg.id), 1);
@@ -203,9 +205,10 @@ var currentGame = {
 				} else if (msg.business) {
 					txt = new createjs.Text();
 					txt.text = msg.business;
+					txt.textAlign = "center";
 					txt.font = "20px Arial";
 					txt.color = "#000000";
-					txt.x = header.x ;
+					txt.x = $('#demoCanvas').width()/2;
 					txt.y = header.y+$('#demoCanvas').height()/10;
 					txt.lineWidth = 400;
 					stage.addChild(txt);

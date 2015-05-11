@@ -3,7 +3,8 @@ var currentGame = {
 		console.log("running poeticJustice...");
 
 		var toRespond = Object.keys(users);
-		var toVote = toRespond;
+		var toVote = Object.keys(users);
+		console.log('OOGBLOOG', toRespond, toVote);
 
 		var winnerScore = 0;
 		var winnerId = undefined;
@@ -40,8 +41,8 @@ var currentGame = {
 		header.lineWidth = 400;
 
 		stage.addChild(header);
-		var L1X =  $('#demoCanvas').width()/2 - 150-75;
-		var L1Y =  header.y+1.5*$('#demoCanvas').height()/10;
+		var L1X =  $('#demoCanvas').width()/2 - 150 -75 ;
+		var L1Y =  header.y+1.5*$('#demoCanvas').height()/8;
 
 		var $L1 = new CanvasInput ({
 			canvas: document.getElementById('demoCanvas'),
@@ -52,7 +53,7 @@ var currentGame = {
 		});
 
 		var L2X =  $('#demoCanvas').width()/2 - 150-75;
-		var L2Y =  L1Y+1.5*$('#demoCanvas').height()/20;
+		var L2Y =  L1Y+1.5*$('#demoCanvas').height()/16;
 
 		var $L2 = new CanvasInput ({
 			canvas: document.getElementById('demoCanvas'),
@@ -63,7 +64,7 @@ var currentGame = {
 		});
 
 		var L3X =  $('#demoCanvas').width()/2 - 150-75;
-		var L3Y =  L2Y+1.5*$('#demoCanvas').height()/20;
+		var L3Y =  L2Y+1.5*$('#demoCanvas').height()/16;
 
 		var $L3 = new CanvasInput ({
 			canvas: document.getElementById('demoCanvas'),
@@ -126,8 +127,8 @@ var currentGame = {
 				responseButtons.push(new createjs.Container());
 				responseButtons[i].name = responses[i].id;
 				responseButtons[i].addChild(rbackground, rlabel,rlabel2,rlabel3);
-				responseButtons[i].x = header.x+(i % 4) * ((300 / 4) + 50);
-				responseButtons[i].y = button.y + Math.floor(i / 4) * 50;
+				responseButtons[i].x = header.x/3 +(i % 3) * ((800 / 3) + 50);
+				responseButtons[i].y = button.y + Math.floor(i / 3) * 100;
 				responseButtons[i].addEventListener("click", voteClick);
 				stage.addChild(responseButtons[i]);
 				console.log('Add button');
@@ -220,7 +221,7 @@ var currentGame = {
 			voteText.text = "You have voted";
 			voteText.font = "25px Arial Bold";
 			voteText.color = "#FF00AA";
-			voteText.x = $('#demoCanvas').width()/2 - voteText.getMeasuredWidth()/2;
+			voteText.x = header.x;
 			voteText.y = button.y;
 			voteText.lineWidth = 400;
 			stage.addChild(voteText);
