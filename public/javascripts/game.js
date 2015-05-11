@@ -1,5 +1,6 @@
 //List of all possible games
-var games = ['FastTyper'];
+var games = ['poeticJustice','SprayTheMost'];
+
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
@@ -28,9 +29,13 @@ gametime = function(users,socket){
 	var stage = new createjs.Stage("demoCanvas");
 	var preload = new createjs.LoadQueue();
 
+	preload.on('fileload', handleFileLoad, this);
+	preload.on('error', handleLoadError, this);
+	preload.on('fileprogress', handleFileProgress, this);
+	preload.on('filestart', handleFileStart, this);
+
 	choose_game()
 
-	preload.on('fileload', handleFileLoad, this);
 
 	socket.on('new_game', function(game) {
 		$('#game-name').text(game);
@@ -62,9 +67,21 @@ gametime = function(users,socket){
 
 	function handleFileLoad (event) {
 		loadedGames[event.item.id] = currentGame.init;
+		console.log("Game loaded, attaching");
 		attachGame(loadedGames[event.item.id]);
 	}
 
+	function handleLoadError (event){
+		console.log("LOAD ERRRROROROROROR");
+	}
+
+	function handleFileProgress (event){
+		console.log("amount loaded", event.loaded);
+	}
+
+	function handleFileStart (event){
+		console.log("Loading Started!!!");
+	}
 	function attachGame (gameInit) {
 		$(document).on('game', gameInit(users, socket, stage,  function (scores){
 			console.log('Unloading Game!');
@@ -88,10 +105,13 @@ gametime = function(users,socket){
 	}
 
 	function updateScores(scores){
+		console.log("updating scores", scores);
 		$.each(scores,function(i,v){
+			console.log(users[v].score);
 			users[v].score= users[v].score + 1;
 			$('#'+v+' div').text(users[v].score.toString());
 		});
+		$('#user').text($('#'+ socket.id).text());
 		console.log('users',users);
 		//update score multiplier
 	}

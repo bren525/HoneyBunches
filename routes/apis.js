@@ -10,6 +10,15 @@ module.exports = function(io){
 		      res.send(mytext);
 		    }
 		});
+  	},
+  	randomWord: function(req, res) {
+  		request('http://randomword.setgetgo.com/get.php', function (err, response, body) {
+		    if (!err && response.statusCode == 200) {
+		      var word = body;
+		      console.log(word);
+		      res.send(word);
+		    }
+		});
   	}
   }
 }

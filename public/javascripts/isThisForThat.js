@@ -1,6 +1,7 @@
 var currentGame = {
 	init: function (users, socket, stage, callback) {
 		console.log("running isthisforthat...");
+		var state = "naming";
 
 		var toRespond = Object.keys(users);
 		var toVote = toRespond;
@@ -13,22 +14,19 @@ var currentGame = {
 		createjs.Ticker.setFPS(60);
 
 		var txt2 = new createjs.Text();
-		txt2.text = "10";
+		txt2.text = "15";
 		txt2.font = "50px Arial";
 		txt2.color = "#ffffff";
 		txt2.outline = false;
 		txt2.x = 10;
 
 		var txt3 = new createjs.Text();
-		txt3.text = "10";
+		txt3.text = "15";
 		txt3.font = "50px Arial";
 		txt3.color = "#000000";
 		txt3.outline = 5;
 		txt3.x = 10;
 
-		timerTicks = 0;
-		time = 10;
-		tickHelp = 10;
 		state ="naming"
 
 		stage.addChild(txt3);
@@ -111,34 +109,41 @@ var currentGame = {
 			});
 		}
 
-		stage.update();
+		var timerTicks = 15;
+        socket.on('timer_message',function(msg){
+            if(state == 'naming'){
+                timerTicks = 15 - msg;
+            }
+            else if (state == 'voting'){
+            	timerTicks = 25 - msg;
+            } 
+            else if (state == 'scoring') {
+            	timerTicks = 30 - msg;
+            }
+			txt3.text = timerTicks.toString();
+			txt2.text = timerTicks.toString();
+			console.log(state, timerTicks);
+        });
+
 		function onTick(event){
-			//console.log(createjs.Ticker.getTime())
-			if(time > 0){
-				timerTicks += 1;
-				time = tickHelp - Math.floor(timerTicks/60);
-				txt3.text = time;
-				txt2.text = time;
-				stage.update();
-				if(state == "naming"){
-					$name.render();
-					$name.renderCanvas();
-				}
+            stage.update();
+			if(state == "naming"){
+				$name.render();
+				$name.renderCanvas();
 			}
-			if ((time === 0 || toRespond.length === 0 ) && state === "naming") {
+            if ((timerTicks === 0 || toRespond.length === 0 ) && state === "naming") {
 				console.log("Voting!");
 				getVoting();
 			}
-			if ((time === 0 || toVote.length === 0)  && state === "voting") {
+			if ((timerTicks === 0 || toVote.length === 0)  && state === "voting") {
 				console.log('Scoring!');
 				getScore();
 			}
-			if(time === 0 && state === "scoring"){
+			if (timerTicks === 0 && state === "scoring"){
 				console.log('Its game over man');
 				gameOver();
 			}
-
-		}
+        }
 		// end
 
 		function handleClick(e) {
@@ -207,9 +212,7 @@ var currentGame = {
 
 		function getVoting() {
 			console.log("Vote: " + responses);
-			timerTicks = 0;
-			time = 5;
-			tickHelp = 15;
+			timerTicks = 10;
 			toRespond.push("Done");
 			try {
 				$name.destroy();
@@ -225,9 +228,7 @@ var currentGame = {
 
 		function getScore() {
 			stage.removeAllChildren();
-			timerTicks = 0;
-			time = 5;
-			tickHelp = 5;
+			timerTicks = 5;
 			state = "scoring";
 			toVote.push("Done");
 			var tally = new createjs.Text("Vote Totals");
