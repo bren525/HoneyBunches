@@ -30,11 +30,16 @@ var currentGame = {
                 timerTicks = 10 - msg;
                 txt.text = timerTicks.toString();
                 txt2.text = timerTicks.toString();
+                if(socket.host && timerTicks = 0){
+                	displayWinner(null,"Yall Failed");
+
+                }
             }
+
 
         });
         //postion each player
-        if(socket.host == true){
+        if(socket.host){
         	numUsers = Object.keys(users).length;
         	pos = 0;
         	$.each(users,function(k,v){
@@ -55,7 +60,7 @@ var currentGame = {
         console.log('boardDiam',boardDiameter);
 
         var board = new createjs.Shape();
-        board.graphics.beginFill('#000').drawCircle(0, 0, Math.round(boardDiameter/2));
+        board.graphics.beginFill('#00F').drawCircle(0, 0, Math.round(boardDiameter/2));
         board.x = stage.width/2;
         board.y = stage.height/2;
         stage.addChild(board);
@@ -94,17 +99,15 @@ var currentGame = {
 	        		players[msg.id].circ.x = Math.round(boardDiameter/2 * msg.postition.x) + stage.width/2;
 	                players[msg.id].circ.y = Math.round(boardDiameter/2 * msg.postition.y) + stage.height/2;
 	            }
-	            if(Math.abs(msg.postition.x-0) < .05 && Math.abs(msg.postition.y-0) < .05 && state=='running'){
+	            if(Math.abs(msg.postition.x-0) < .05 && Math.abs(msg.postition.y-0) < .05 && state=='running' && socket.host){
 	            	socket.emit('game message',{title:'outofcontrol',type:'winner',id:msg.id});
 	            	state = 'scoring';
-
-
 	            }
         	}
 
         	if(msg.title == "outofcontrol" && msg.type == "winner"){
         		state = 'scoring';
-        		displayWinner(msg.id);
+        		displayWinner(msg.id,users[msg.id].nickname);
 
         	}
 
@@ -174,14 +177,14 @@ var currentGame = {
 	        }
         }
 
-        function displayWinner(winid){
+        function displayWinner(winid,text){
 
             
             var winner = [winid];
             
 
             var wintxt = new createjs.Text();
-            wintxt.text = users[winid].nickname;
+            wintxt.text = text;
             wintxt.font = "50px Arial";
             wintxt.color = "#000000";
             wintxt.outline = 5;
