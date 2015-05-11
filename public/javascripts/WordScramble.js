@@ -36,13 +36,6 @@ var currentGame = {
         var w = $('#demoCanvas').width()/3;
         var h = $('#demoCanvas').height()/6;
 
-        var wordtxt = new createjs.Text()
-        wordtxt.text = wordScrambled;
-        wordtxt.font = "50px Arial";
-        wordtxt.color = "#000000";
-        wordtxt.x = w;
-        wordtxt.y = h;
-
         var $guess = new CanvasInput ({
             canvas: document.getElementById('demoCanvas'),
             fontSize: 18,
@@ -103,7 +96,12 @@ var currentGame = {
             if (msg.title == 'wordscramble' && msg.type == 'word') {
                 wordUnscrambled = msg.unscrambled;
                 wordScrambled = msg.scrambled;
+                var wordtxt = new createjs.Text()
                 wordtxt.text = wordScrambled;
+                wordtxt.font = "50px Arial";
+                wordtxt.color = "#000000";
+                wordtxt.x = w;
+                wordtxt.y = h;
                 stage.addChild(wordtxt);
                 stage.update();
             }
