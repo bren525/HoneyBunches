@@ -9,7 +9,7 @@ var namespace = $title.attr('namespace');
 //Socket events
 socket.on('new_user', function(data) {
 	console.log('new', data.colour);
-	$('#x' + data.colour).addClass('disableColor');
+	$(data.colour).addClass('disableColor');
 	if (data.id === socket.id) {
 		//Add user and button to list
 		$("#users").prepend("<div class='row'><div class='colorChoice' style='margin-right: 0.2em;background-color: "+ data.colour +"'></div><li class='name' id="+ data.id +" type='text'>"+data.nickname+"</li><input class='editName' type='submit' value='Edit' style='margin-left: 1em'></div>");
@@ -57,12 +57,12 @@ socket.on('start_game', function(msg){
 
 //On click Events
 $(document).on('click','.colorBlock', function() {
-	console.log('color');
 	//color block choice
 	var choice = $(this).attr('id');
-	if ($(this).hasClass('disableColor')) {
-		console.log("disabled");
-	}
+	console.log(choice);
+	// if ($(this).hasClass('disableColor')) {
+	// 	console.log("disabled");
+	// }
 	socket.emit('color', {id: $('.name').attr('id'), colour:choice});
 });
 

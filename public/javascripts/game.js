@@ -1,5 +1,8 @@
 //List of all possible games
-var games = ['poeticJustice','BigButton',/*'SprayTheMost',*/'OutOfControl'];
+
+var games = ['OutOfControl'];
+
+
 
 var $canvas = $('#demoCanvas');
 var $canvasContainer= $('#canvasContainer')
