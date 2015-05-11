@@ -134,6 +134,7 @@ var currentGame = {
 			msgTime = msg;
         });
 
+        // handles game state transitions
 		function onTick(event){
             stage.update();
 			if(state == "naming"){
@@ -153,8 +154,8 @@ var currentGame = {
 				gameOver();
 			}
         }
-		// end
 
+        // click handler for input submission
 		function handleClick(e) {
 			try{
 				stage.removeChild(button);
@@ -166,6 +167,7 @@ var currentGame = {
 			socket.emit('game message', {title: 'isThisForThat', id: socket.id, name: $name.value()})
 		}
 
+		// click handler for vote submission
 		function voteClick(e) {
 			console.log("yes");
 			console.log(e.target.name);
