@@ -3,8 +3,12 @@ var currentGame = {
     init: function (users, socket, stage, callback) {
         console.log("running WordScramble");
         state = "running";
+
+        var toRespond = Object.keys(users);
+
         var wordUnscrambled;
         var wordScrambled;
+
         if (socket.host == true) {
     		var temp = getScrambled(words); 
     		wordUnscrambled = temp[0];
@@ -102,7 +106,8 @@ var currentGame = {
                 wordtxt.text = wordScrambled;
                 stage.update();
             }
-            if (msg.title == 'wordscramble' && msg.type == 'guess') {
+            if (msg.title == 'wordscramble' && msg.type == 'guess') {     
+                toRespond.splice(toRespond.indexOf(msg.id), 1);
                 if (msg.correct) {
                     winners.push(msg.id);
                 }
@@ -119,7 +124,7 @@ var currentGame = {
             stage.update();
             $guess.render();
             $guess.renderCanvas();
-            if(timerTicks == 0 && state == 'running'){
+            if((timerTicks == 0 || toRespond.length === 0 ) && state == 'running'){
                 if (socket.host == true) {
                     socket.emit("game message",{title:'wordscramble',type:'state',state:'scoring'});
                 }
